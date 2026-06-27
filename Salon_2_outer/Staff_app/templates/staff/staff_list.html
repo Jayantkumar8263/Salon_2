@@ -1,0 +1,47 @@
+{% extends "base/base.html" %}
+
+{% block base %}
+<div class="container mt-4">
+    <h2>Our Staff</h2>
+
+    <div class="row">
+        {% for staff_profile in staff_profiles %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+
+                        {% if staff_profile.photo %}
+                            <img src="{{ staff_profile.photo.url }}"
+                                 alt="Profile photo"
+                                 class="rounded-circle mb-3"
+                                 style="width:100px; height:100px; object-fit:cover;">
+                        {% endif %}
+
+                        <p>
+                            <strong>Name:</strong>
+                            {{ staff_profile.user.get_full_name|default:staff_profile.user.username }}
+                        </p>
+
+                        <p>
+                            <strong>Bio:</strong>
+                            {{ staff_profile.bio|default:"-" }}
+                        </p>
+
+                        <p>
+                            <strong>Services:</strong>
+                            {% for service in staff_profile.services.all %}
+                                {{ service.service_name }}{% if not forloop.last %}, {% endif %}
+                            {% empty %}
+                                None set
+                            {% endfor %}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No staff profiles available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

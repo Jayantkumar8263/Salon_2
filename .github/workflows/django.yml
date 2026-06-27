@@ -1,0 +1,34 @@
+name: Salon_2 Deploy # name of the worker
+
+# this is your trigger or event that will start the workflow.
+on: # event that will trigger the workflow, on is an event.
+  push: # it is a trigger point for our worker, it is a trigger, push is used here because we want to trigger our workflow every time we push code to our repository, it is a trigger that will start our workflow.
+    branches: [ main ] # this means that the workflow will run every time you push to the main branch, kaha push ho raha hai.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4 # it will clone the code from the repository to the runner, actions/checkout is an action that is used to check out the code from the repository, @v4 is the version of the action.
+
+      - name: vm done
+        run: echo "we have created the github VM"
+
+      - name: SSH Key
+        run: |
+          mkdir -p ~/.ssh/ # .ssh is used for making a hidden folder, we are creating a hidden folder.
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa # this creates a file called id_rsa in the .ssh folder, and writes the value of the secret EC2_SSH_KEY into that file, this is the private key.
+          chmod 600 ~/.ssh/id_rsa # chmod is used for changing the permissions of the file, 600 means read and write only for the owner, no permissions for anyone else.
+
+      - name: deploy on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          cd /home/ubuntu/Salon_2/Salon_2_outer/Salon_2
+          source /home/ubuntu/env/bin/activate
+          git pull origin main
+          pip install -r requirements.txt
+          python manage.py makemigrations
+          python manage.py migrate
+          sudo supervisorctl restart guni
+          sudo systemctl restart nginx
+          EOF

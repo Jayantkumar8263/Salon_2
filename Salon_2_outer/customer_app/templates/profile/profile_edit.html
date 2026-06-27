@@ -1,0 +1,88 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block base %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col text-center">
+            <h1 class="fw-bold">Edit Profile</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow rounded-0">
+                <div class="card-body p-4">
+
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <h5 class="fw-bold mb-3">Account Details</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            {{ user_form.username }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            {{ user_form.email }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            {{ user_form.first_name }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            {{ user_form.last_name }}
+                        </div>
+
+                        <h5 class="fw-bold mt-4 mb-3">Contact Details</h5>
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            {{ profile_form.phone_number }}
+                        </div>
+                        <h5 class="fw-bold mt-4 mb-3">Profile Images</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Banner Image</label>
+                            {{ profile_form.banner }}
+                            {% if request.user.customer_profile.banner %}
+                            <div class="mt-2">
+                                <img src="{{ request.user.customer_profile.banner.url }}" alt="Current banner"
+                                    class="img-fluid rounded">
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Avatar Image</label>
+                            {{ profile_form.avatar }}
+                            {% if request.user.customer_profile.avatar %}
+                            <div class="mt-2">
+                                <img src="{{ request.user.customer_profile.avatar.url }}" alt="Current avatar"
+                                    class="rounded-circle border" style="width: 80px; height: 80px; object-fit: cover;">
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ user_form.non_field_errors }}
+                            {{ profile_form.non_field_errors }}
+                        </div>
+                        {% endif %}
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'profile' %}" class="btn btn-secondary rounded-0">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-secondary rounded-0">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock base %}

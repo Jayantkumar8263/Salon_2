@@ -1,0 +1,44 @@
+{% extends "base/base.html" %}
+{% block base %}
+<div class="container mt-4">
+    <h2>Your Appointments</h2>
+
+    {% for appointment in appointments %}
+    <div class="card mt-3">
+        <div class="card-body">
+
+            <h5 class="card-title">
+                Appointment with {{ appointment.staff.name }}
+            </h5>
+
+            <h6 class="card-subtitle mb-2 text-muted">
+                Service: {{ appointment.service.service_name }}
+            </h6>
+
+            <p class="card-text">
+                Date and Time: {{ appointment.start_time }}
+            </p>
+
+            {% if appointment.notes %}
+            <p class="card-text"><small>Notes: {{ appointment.notes }}</small></p>
+            {% endif %}
+
+            <a href="{% url 'appointment_edit' appointment.id %}" class="btn btn-warning btn-sm">
+                Edit
+            </a>
+
+            {% if appointment.id %}
+            <a href="{% url 'appointment_cancel' appointment.id %}" class="btn btn-danger btn-sm">
+                Cancel
+            </a>
+            {% endif %}
+
+        </div>
+    </div>
+    {% empty %}
+    <p>You have no appointments yet.</p>
+    <strong>Date & Time:</strong> {{ appointment.start_time }}
+    <strong>Status:</strong> {{ appointment.status }}
+    {% endfor %}
+</div>
+{% endblock %}

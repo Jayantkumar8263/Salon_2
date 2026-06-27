@@ -1,0 +1,97 @@
+{% extends "base/base.html" %}
+
+{% block base %}
+<div class="container mt-4">
+
+  <!-- Heading -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="mb-0">{{ settings.salon_name }} Dashboard</h2>
+      <small class="text-muted">Date: {{ today }}</small>
+    </div>
+
+    {% if settings %}
+    <div class="text-end d-none d-md-block">
+      <h6 class="mb-0">{{ settings.salon_name }}</h6>
+      {% if settings.contact_number %}
+      <small class="text-muted">Contact: {{ settings.contact_number }}</small><br>
+      {% endif %}
+      {% if settings.opening_time and settings.closing_time %}
+      <small class="text-muted">
+        Open: {{ settings.opening_time }} — {{ settings.closing_time }}
+      </small>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Top stats cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted mb-1">Total Staff</h6>
+          <h3 class="mb-0">{{ total_staff }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted mb-1">Present Today</h6>
+          <h3 class="mb-0 text-success">{{ present_today }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h6 class="text-muted mb-1">Absent Today</h6>
+          <h3 class="mb-0 text-danger">{{ absent_today }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick links section -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Quick Links</h5>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'owner_staff_list' %}" class="btn btn-outline-primary btn-sm">
+          View all staff
+        </a>
+        <a href="{% url 'owner_staff_attendance' %}" class="btn btn-outline-secondary btn-sm">
+          Staff attendance
+        </a>
+        <a href="{% url 'owner_working_hours' %}" class="btn btn-outline-secondary btn-sm">
+          Working hours
+        </a>
+        <a href="{% url 'salon_settings' %}" class="btn btn-outline-dark btn-sm">
+          Salon settings
+        </a>
+        <a href="{% url 'staff_registration' %}" class="btn btn-outline-success btn-sm">
+          Add staff
+        </a>
+         <a href="{% url 'logout' %}" class="btn btn-danger btn-sm ms-auto">
+        Logout
+      </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Placeholder for future charts / tables -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Overview</h5>
+      <p class="text-muted mb-0">
+        More detailed reports (revenue, service-wise bookings, staff performance) can be added here later.
+      </p>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

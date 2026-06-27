@@ -1,0 +1,12 @@
+server{
+
+        listen 80;
+        server_name 18.60.107.33;
+        location /static/{
+            alias /home/ubuntu/Salon_2/Salon_2_outer/static/;
+        }
+        location /{
+                include proxy_params;
+                proxy_pass http://unix:/home/ubuntu/Salon_2/Salon_2_outer/app.sock ; 
+        }
+}

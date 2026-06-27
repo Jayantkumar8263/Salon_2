@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Salon</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/static/css/main.css">
+
+    <style>
+        /* hovering effect code Css */
+        .navbar-link {
+            position: relative;
+            color: black;
+            text-decoration: none;
+            padding-bottom: 3px;
+            /* space for underline */
+        }
+
+        /*
+
+        .navbar-link::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            height: 2px;
+            background-color: #0d6efd;
+            transition: width 0.3s ease-in-out;
+        }
+*/
+        .navbar-link:hover {
+            color: white;
+            background-color: black;
+        }
+
+        .navbar-link:hover::after {
+            width: 100%;
+        }
+
+        /* End of hovering effect code Css */
+    </style>
+</head>
+
+<body>
+
+
+    {% comment %} Navbar {% endcomment %}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid d-flex justify-content-between py-2">
+            <div class="d-flex">
+                <img src="/static/images/logo.jpg" style="width: 50px;height: 50px" class="rounded-circle me-1" alt="">
+                <h1><b>Saloon</b></h1>
+            </div>
+            <div class="d-md-block d-none">
+                <ul class="d-flex justify-content-between list-unstyled m-0 p-0">
+                    <li class="mx-5"><a href="{% url 'home' %}" type="button" class="navbar-link rounded p-2">Home</a>
+                    </li>
+                    <li class="mx-5"><a href="{% url 'service_list' %}" type="button"
+                            class="navbar-link rounded p-2">Services</a></li>
+                    <li class="mx-5"><a href="{% url 'staff_profiles' %}" type="button"
+                            class="navbar-link rounded p-2">Staff</a></li>
+                    <li class="mx-5"><a href="{% url 'appointment_form' %}" type="button"
+                            class="navbar-link rounded p-2">Book Appointment</a></li>
+                            <!-- Staff Profile link  -->
+                    {% if user.is_authenticated and user.is_staff and not user.is_superuser %}
+                    <li class="mx-2">
+                        <a href="{% url 'staff_profile' %}" class="btn btn-outline-primary btn-sm">
+                            Staff Profile
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    <!-- Admin Dashboard link -->
+                    {% if user.is_authenticated and user.is_superuser %}
+                    <li class="mx-2">
+                        <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-dark btn-sm">
+                            Admin Dashboard
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+
+                <style>
+                    .dark:hover {
+                        color: black;
+                    }
+                </style>
+                <button class="btn btn-outline-warning d-md-none d-block" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">Enable </button>
+                <!-- for Scroll bar in the website -->
+                <div class="offcanvas offcanvas-start d-md-none d-block" data-bs-scroll="true" tabindex="-1"
+                    id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Backdrop with scrolling</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <!-- <p>Try scrolling the rest of the page to see this option in action.</p> -->
+                    </div>
+                </div>
+            </div>
+            <!-- Navbar logo -->
+            {% comment %} registration {% endcomment %}
+            <div class=" d-md-flex d-none justify-content-between">
+                {% comment %} profile {% endcomment %}
+                {% if user.is_authenticated and not user.is_staff %}
+                <a href="{% url 'profile' %}" class="text-dark fs-4 mx-1">
+                    <i class="bi bi-person"></i>
+                </a>
+                {% endif %}
+                {% if user.is_authenticated and user.staffprofile %}
+                <a href="{% url 'owner_staff_list' %}" class="btn btn-sm btn-outline-dark ms-2">
+                    Staff list
+                </a>
+                {% endif %}
+
+                <a href="{% url 'registration' %}" class="text-dark fs-4 mx-1">
+                    <i class="bi bi-person-fill-add"></i>
+                </a>
+                {% comment %} signin {% endcomment %}
+                <a href="{% url 'signin' %}" class="text-dark fs-4 mx-1">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+    {% comment %} Elert of message error {% endcomment %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% comment %} End of Elert of message error {% endcomment %}
+
+    {% block base %}
+
+    {% endblock base %}
+    <!-- Written text  -->
+
+    {% comment %} Footer {% endcomment %}
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
+
+                <div class=" d-md-flex d-none justify-content-between ms-5">
+                    <a href="#" class="text-dark fs-4 mx-2">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                    <div class=" d-md-flex d-none justify-content-between ms-3">
+                        <a href="#" class="text-dark fs-4 mx-2">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                    </div>
+                    <div class=" d-md-flex d-none justify-content-between ms-3">
+                        <a href="#" class="text-dark fs-4 mx-2">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </ul>
+            <p class="text-center text-body-secondary">© 2025 Company, Inc</p>
+            <p class="text-left text-body-secondary text-dark fw-bold">Made by : PJ</p>
+        </footer>
+    </div>
+    {% comment %} end of Footer {% endcomment %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

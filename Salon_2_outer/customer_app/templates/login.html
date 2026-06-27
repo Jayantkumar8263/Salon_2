@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block base %}
+<div class="container-fluid">
+    <div class="row justify-content-center d-flex align-items-center vh-100">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Log_in</h2>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="" class="form-label fw-bold text-dark">UserName</label>
+                                    <input type="" class="form-control" id="" aria-describedby="emailHelp">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="exampleInputEmail1"
+                                        class="form-label fw-bold text-dark">Password</label>
+                                    <input type="" class="form-control" id="" aria-describedby="emailHelp">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 rounded-0">Log_in</button>
+                        <div class="card-footer text-center">
+                            <small>Don't have an account? <a href="{% url 'signup' %}">Sign up.</a></small>
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock base %}

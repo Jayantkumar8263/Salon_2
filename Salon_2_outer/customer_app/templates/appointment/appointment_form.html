@@ -1,0 +1,72 @@
+{% extends 'base/base.html' %}
+
+{% block base %}
+<div class="container mt-4">
+  <h2>{{ page_title|default:"Book Appointment" }}</h2>
+
+  <form method="post" class="mt-4">
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+
+    <div class="mb-3">
+      <label class="form-label fw-bold text-dark">Username</label>
+      <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold text-dark">Staff</label>
+      {{ form.staff }}
+      {% if form.staff.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.staff.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold text-dark">Services</label>
+      {{ form.service }}
+      {% if form.service.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.service.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold text-dark">
+        Date and Time <span class="text-danger">*</span>
+      </label>
+      {{ form.start_time }} 
+      {% if form.start_time.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.start_time.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-bold text-dark">Notes (Optional)</label>
+      <input type="text" class="form-control" placeholder="Any specific requests?">
+      {{ form.notes }}
+      {% if form.notes.errors %}
+        <div class="invalid-feedback d-block">
+          {{ form.notes.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold">
+      Confirm Booking
+    </button>
+    <a href="javascript:history.back()" class="btn btn-dark btn-lg w-100 mt-2">
+      Cancel
+    </a>
+  </form>
+</div>
+{% endblock base %}

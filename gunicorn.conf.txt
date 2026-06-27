@@ -1,0 +1,11 @@
+[program:gunicorn]
+directory=/home/ubuntu/Salon_2/Salon_2_outer
+command=/home/ubuntu/env/bin/gunicorn --workers 3 --bind unix:/home/ubuntu/Salon_2/Salon_2_outer/app.sock Salon_2.wsgi:application
+autostart=true
+autorestart=true
+stderr_logfile=/var/log/gunicorn/gunicorn.err.log
+stdout_logfile=/var/log/gunicorn/gunicorn.out.log
+user=ubuntu
+environment=DJANGO_SETTINGS_MODULE=Salon_2.settings,PYTHONPATH=/home/ubuntu/Salon_2/Salon_2_outer
+[group:guni]
+programs=gunicorn

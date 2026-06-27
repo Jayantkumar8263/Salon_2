@@ -1,0 +1,14 @@
+<!-- owner_staff_list.html -->
+{% extends "base/base.html" %}
+{% block base %}
+<div class="container mt-4">
+  <h2>All staff (admin view)</h2>
+  <ul>
+    {% for s in staff_profiles %}
+      <li>{{ s.user.get_full_name|default:s.user.username }}</li>
+    {% empty %}
+      <li>No staff profiles.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

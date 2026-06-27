@@ -1,0 +1,88 @@
+{% extends "base/base.html" %}
+{% block base %}
+<style>
+  .background{
+    background-color: orangered;
+    opacity: 0.5;
+  }
+</style>
+<div class="d-flex  w-100">
+
+  <div class="bg-primary w-100">h</div>
+  <div class="bg-danger w-100">h</div>
+  <div class="bg-warning w-100">h</div>
+  <div class="bg-secondary w-100">h</div>
+</div>
+<div class="row my-5 bg-secondary py-5">
+  <div class="col align-self-center justify-content-center w-100 d-flex">
+    <h1>contact us </h1>
+  </div>
+  <div class="col">
+    <div class="card w-50  background" >
+      <div class="card-body">
+
+        <form>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% comment %} <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner welcome_image">
+    <div class="carousel-item active">
+      <div class="col border">
+        <img src="/static/images/Salon_Homepage.jpg" class="img-fluid w-100 welcome_image" style="object_fit:contain"
+          alt="...">
+      </div>
+    </div>
+    <div class="carousel-item active">
+      <div class="col border">
+        <img src="/static/images/hp1.jpg" class="img-fluid w-100 welcome_image" style="object_fit:contain" alt="...">
+      </div>
+    </div>
+    <div class="carousel-item">
+      <!-- how to change the height of the image -->
+      <img src="/static/images/hp2.jpg" class="d-block w-100 welcome_image" style="object_fit:contain" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<div class="container-fluid my-5">
+  <div class="contianer">
+    <div class="row">
+      <div class="col text-center ">
+        <h2>Welcome to Our Salon</h2>
+        <div class="d-flex align-items-center justify-content-center">
+          <p class="lead">Experience the best in beauty and relaxation with our expert services and friendly staff.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="ratio ratio-16x9">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
+{% endblock base %}

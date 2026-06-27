@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+
+{% block base %}
+<div class="container-fluid bg-dark py-5 ">
+  <div class="container">
+    <div class="card bg-muted border-0 shadow rounded-0">
+      <div class="card-body">
+        <h1 class="text-center fw-bold text-dark my-4">Appointment details </h1>
+        <!-- Appointment details list -->
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Appointment ID:</strong> {{ appointment.id }}</li>
+          <li class="list-group-item"><strong>Customer Name:</strong> {{ appointment.customer_name }}</li>
+          <li class="list-group-item"><strong>Service:</strong> {{ appointment.service }}</li>
+          <li class="list-group-item"><strong>Date:</strong> {{ appointment.date }}</li>
+          <li class="list-group-item"><strong>Time:</strong> {{ appointment.time }}</li>
+          <li class="list-group-item"><strong>Stylist:</strong> {{ appointment.stylist }}</li>
+          <li class="list-group-item"><strong>Status:</strong> {{ appointment.status }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock base %}

@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+
+{% block base %}
+<div class="container mt-4">
+
+  <h2 class="mb-4">Owner Profile</h2>
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Read-only user info -->
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title mb-3">
+              {{ request.user.get_full_name|default:request.user.username }}
+            </h5>
+            <p class="mb-1">
+              <strong>Username:</strong> {{ request.user.username }}
+            </p>
+            <p class="mb-0">
+              <strong>Email:</strong> {{ request.user.email|default:"Not set" }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Editable owner profile fields -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Contact details</h5>
+
+            <div class="mb-3">
+              <label class="form-label">Phone number</label>
+              <input type="text"
+                     name="phone_number"
+                     class="form-control"
+                     value="{{ profile.phone_number|default_if_none:'' }}">
+                    <!-- value="{{ profile.phone_number|default_if_none:'' }}"> : in this line we are setting the default value for the phone number input field, i am doing this because the phone number is optional and we want to show the current value if it exists. -->
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Address</label>
+              <textarea name="address"
+                        class="form-control"
+                        rows="3">{{ profile.address|default_if_none:'' }}</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-dark">
+              Save changes
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
