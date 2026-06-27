@@ -62,19 +62,14 @@ WSGI_APPLICATION = 'Salon_2.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 # Rds Database configuration
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
        'NAME': 'database-1',
        'DATABASE': 'postgres',
+       'USER': 'postgres',
+       'PASSWORD': 'Aws_12345',
        'HOST': 'database-1.c5se6sg0oxmq.ap-south-2.rds.amazonaws.com',
        'PORT': 5432,        
    }
