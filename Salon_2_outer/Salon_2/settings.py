@@ -1,7 +1,10 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / '.env')
+
 
 SECRET_KEY = 'django-insecure-4@53h(#6x07h!rt74lio&$%qe4ue^wb!fus+30&fz(y2#aov!8'
 
@@ -22,6 +25,7 @@ INSTALLED_APPS = [
     'Staff_app',
     'rest_framework', 
     'rest_framework.authtoken',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -64,17 +68,15 @@ WSGI_APPLICATION = 'Salon_2.wsgi.application'
 
 # Rds Database configuration
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'database-1',
-       'DATABASE': 'postgres',
-       'USER': 'postgres',
-       'PASSWORD': 'Aws_12345',
-       'HOST': 'database-1.c5se6sg0oxmq.ap-south-2.rds.amazonaws.com',
-       'PORT': 5432,        
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'database-1',
+        'USER': 'postgres',
+        'PASSWORD': 'Aws_12345',
+        'HOST': 'database-1.c5se6sg0oxmq.ap-south-2.rds.amazonaws.com',
+        'PORT': '5432',
+    }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -99,7 +101,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+#STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -131,3 +133,26 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ]
 }
+
+# S3 bucket configuration
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+# S3 config
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+
+# Static files (CSS, JavaScript, Images)
+# Use 'storages.backends.s3.S3Storage' for Django >= 4.2
+# Use 'storages.backends.s3boto3.S3Boto3Storage' for older versions
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+    },
+}
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
