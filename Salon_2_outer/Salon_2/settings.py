@@ -112,7 +112,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
 
-MEDIA_URL = '/media/'# this is the URL for media files, used when you want to access media files in templates
+#MEDIA_URL = '/media/'# this is the URL for media files, used when you want to access media files in templates
 MEDIA_ROOT = BASE_DIR / 'media' # this is the path where media files are stored on the server, used when you want to save media files uploaded by users
 
 
@@ -142,17 +142,29 @@ AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
 
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 # Static files (CSS, JavaScript, Images)
 # Use 'storages.backends.s3.S3Storage' for Django >= 4.2
 # Use 'storages.backends.s3boto3.S3Boto3Storage' for older versions
+
 STORAGES = {
     "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-    },
-}
+         "BACKEND": "salon_app.storage_backends.MediaStorage",
+     },
+     "staticfiles": {
+         "BACKEND": "salon_app.storage_backends.StaticStorage",
+     },
+ }
 
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# STORAGES = {
+#     "default": {
+#         "BACKEND": "django.core.files.storage.FileSystemStorage",
+#     },
+#     "staticfiles": {
+#         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+#     },
+# }
+
+# STATIC_URL = '/static/'
+# MEDIA_URL = '/media/'
