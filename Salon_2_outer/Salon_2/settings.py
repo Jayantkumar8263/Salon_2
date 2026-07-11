@@ -1,9 +1,9 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / '.env')
+load_dotenv(find_dotenv())
 
 
 SECRET_KEY = 'django-insecure-4@53h(#6x07h!rt74lio&$%qe4ue^wb!fus+30&fz(y2#aov!8'
@@ -137,25 +137,36 @@ REST_FRAMEWORK = {
 # S3 bucket configuration
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-# S3 config
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
 AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
 
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+# NEW: Additional S3 settings for modern AWS buckets
+AWS_S3_OBJECT_PARAMETERS = { # is line me humne S3 object parameters set kiye hain, 'CacheControl': 'max-age=86400' ka matlab hai ki hum apne S3 object ko 1 day ke liye cache karenge, cache matlab ki agar koi user same object ko dobara request karega to wo cache se serve hoga instead of S3 bucket se, isse performance improve hoti hai aur S3 requests kam hoti hain.
+    'CacheControl': 'max-age=86400',
+}
+AWS_DEFAULT_ACL = None
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_S3_VERIFY = True
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+
+# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 # Static files (CSS, JavaScript, Images)
 # Use 'storages.backends.s3.S3Storage' for Django >= 4.2
 # Use 'storages.backends.s3boto3.S3Boto3Storage' for older versions
 
 STORAGES = {
     "default": {
-         "BACKEND": "salon_app.storage_backends.MediaStorage",
-     },
-     "staticfiles": {
-         "BACKEND": "salon_app.storage_backends.StaticStorage",
-     },
- }
+        "BACKEND": "salon_app.storage_backends.MediaStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "salon_app.storage_backends.StaticStorage",
+    },
+}
 
 # STORAGES = {
 #     "default": {
@@ -166,5 +177,5 @@ STORAGES = {
 #     },
 # }
 
-# STATIC_URL = '/static/'
-# MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
+MEDIA_URL = '/media/'

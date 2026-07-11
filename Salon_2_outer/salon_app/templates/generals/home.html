@@ -1,152 +1,169 @@
-{% extends "base/base.html" %}
-{% block base %}
+{% extends 'base/base.html' %}
+{% load static %}
 
-<!--Backgront colour of the card of from box  -->
-<style>
-  .background {
-    background-color: white;
-    opacity: 0.5;
-  }
-</style>
-<div class="container-fluid m-0 p-0 ">
-  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner welcome_image">
-      <div class="carousel-item active">
-        <div class="col border">
-          <img src="/static/images/Salon_Homepage.jpg" class="img-fluid w-100 welcome_image" style="object_fit:contain"
-            alt="...">
-        </div>
-      </div>
+{% block title %}
+Home
+{% endblock %}
 
-      <div class="carousel-item active">
-        <div class="col border">
-          <img src="/static/images/hp1.jpg" class="img-fluid w-100 welcome_image" style="object_fit:contain" alt="...">
-        </div>
-      </div>
-      <div class="carousel-item">
-        <!-- how to change the height of the image -->
-        <img src="/static/images/hp2.jpg" class="d-block w-100 welcome_image" style="object_fit:contain" alt="...">
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-      data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-      data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-</div>
-<div class="container-fluid my-5">
-  <div class="contianer">
-    <div class="row">
-      <div class="col text-center ">
-        <h2>Welcome to Our Salon</h2>
-        <div class="d-flex align-items-center justify-content-center">
-          <p class="lead">Welcome to Salon,Experience the best in beauty and relaxation with our expert services
-            and friendly
-            staff, where beauty meets comfort. Our skilled stylists and beauty experts are
-            dedicated to giving you a refreshing, confidence-boosting experience. From hair styling to skincare, every
-            service is delivered with care, precision, and high-quality products. Relax, unwind, and let us bring out
-            the best version of you. Your perfect look starts here..</p>
-        </div>
-      </div>
-      <div class="col">
-        <div class="ratio ratio-16x9">
-        <img src="/static/images/sv-2.jpg" class="img-fluid" alt="">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Container for the images -->
-<div class="container-fluid">
-  <h1 class="text-center fw-bold my-5 ">Our Services</h1>
-  <div class="row">
-    <div class="col-md-6 m-0 p-0">
-      <h1 class="text-center fw-bold my-3 ">Man</h1>
-      <a href="{% url 'service_list' %}">
-        <img src="/static/images/gents.jpg" class="img-fluid" alt="">
-      </a>
-    </div>
-    <div class="col-md-6 m-0 p-0">
-      <h1 class="text-center fw-bold my-3 ">Women</h1>
-      <a href="{% url 'service_list' %}">
-        <img src="/static/images/ladies.jpg" class="img-fluid" alt="">
-      </a>
-    </div>
-  </div>
-</div>
-<!-- For Card of contact us form  -->
-<div class="container-fluid bg-dark py-5 ">
-  <div class="container">
-    <div class="card bg-muted border-0 shadow rounded-0">
-      <div class="card-body">
-        <h1 class="text-center fw-bold text-dark my-4">Contact Us</h1>
-        <!-- Contact us form -->
-        <form>
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="" class="form-label fw-bold text-dark">Name</label>
-                <input type="" class="form-control" id="" aria-describedby="emailHelp">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label fw-bold text-dark">Email</label>
-                <input type="" class="form-control" id="" aria-describedby="emailHelp">
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <label for="" class="form-label fw-bold text-dark">Phone</label>
-                <input type="" class="form-control" id="" aria-describedby="emailHelp">
-              </div>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label fw-bold text-dark">Services</label>
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Open this select menu</option>
-              <option value="1">Hair Cut</option>
-              <option value="2">Beard Cut</option>
-              <option value="3">Taning</option>
-              <option value="3">Taning</option>
-              <option value="3">Taning</option>
-              <option value="3">Taning</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="exampleFormControlTextarea1" class="form-label fw-bold text-dark">Message</label>
-            <textarea class="form-control" id="" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-dark w-100 rounded-0">Submit</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Content Bout the shop -->
-<div class="container-fluid">
-  <div class="row">
-    <div class="col text-center "></div>
-    <div class="d-flex align-items-center justify-content-center">
-      <p class="lead">Welcome to Salon Flow, your space to relax, refresh, and rediscover your best self. Every guest
-        who walks through our doors is treated with warmth, kindness, and genuine respect, because your comfort and
-        confidence matter most to us. Our team of skilled stylists and beauty professionals take time to listen to
-        your preferences, understand your lifestyle, and create looks that feel natural, elegant, and uniquely yours.
-        From everyday grooming to special occasions, we use carefully selected, high-quality products and modern
-        techniques to care for your hair, skin, and overall well-being. Cleanliness, safety, and professionalism are
-        at the heart of everything we do, so you can simply sit back and enjoy the experience.
 
-        Whether you’re here for a quick touch-up or a complete transformation, Salon Flow is committed to making you
-        feel valued, understood, and beautifully you. Thank you for trusting us—we look forward to welcoming you again
-        and again.</p>
+{% block content %}
+
+<section class="hero">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8 text-center">
+
+                <span class="section-label">
+
+                    Premium Salon Experience
+
+                </span>
+
+                <h1 class="hero-title">
+
+                    Where Beauty
+
+                    <span>Meets Artistry</span>
+
+                </h1>
+
+                <p class="hero-text">
+
+                    This Salon is Toronto's most sought-after luxury salon.
+                    Experience world-class stylists,
+                    luxurious interiors,
+                    and premium beauty treatments.
+
+                </p>
+
+                <div class="mt-5">
+
+                    <a href="#"
+                       class="btn btn-gold me-3">
+
+                        Book Appointment
+
+                    </a>
+
+                    <a href="#"
+                       class="btn btn-outline-gold">
+
+                        Explore Services
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-  </div>
-</div>
-{% endblock base %}
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <span class="section-label">
+
+                Why Choose Us
+
+            </span>
+
+            <h2 class="section-title">
+
+                Premium Experience
+
+            </h2>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <i class="bi bi-calendar-check feature-icon"></i>
+
+                    <h4>Easy Booking</h4>
+
+                    <p>
+
+                        Schedule appointments online in minutes.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <i class="bi bi-person-badge feature-icon"></i>
+
+                    <h4>Expert Staff</h4>
+
+                    <p>
+
+                        Certified beauty professionals.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <i class="bi bi-gem feature-icon"></i>
+
+                    <h4>Premium Products</h4>
+
+                    <p>
+
+                        Only luxury international brands.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+
+                <div class="feature-card">
+
+                    <i class="bi bi-shield-check feature-icon"></i>
+
+                    <h4>Guaranteed Quality</h4>
+
+                    <p>
+
+                        100% satisfaction with every service.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
