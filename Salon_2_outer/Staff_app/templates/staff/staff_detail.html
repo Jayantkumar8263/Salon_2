@@ -2,10 +2,10 @@
 {% load static %}
 
 {% block title %}
-{{ staff.user.get_full_name }} | Lumière Salon
+{{ staff.user.get_full_name }} | Salon
 {% endblock %}
 
-{% block base %}
+{% block content %}
 
 <section class="staff-detail-section py-5">
 
@@ -37,7 +37,7 @@
 
                 <div class="col-lg-4 text-lg-end">
 
-                    <a href="{% url 'staff_list' %}" class="btn btn-outline-gold">
+                    <a href="{% url 'staff_profile' %}" class="btn btn-outline-gold">
 
                         <i class="bi bi-arrow-left"></i>
 
@@ -856,7 +856,7 @@
 
                 {% endif %}
 
-                <a href="{% url 'staff_list' %}" class="btn btn-outline-gold">
+                <a href="{% url 'staff_profile' %}" class="btn btn-outline-gold">
 
                     <i class="bi bi-arrow-left"></i>
 

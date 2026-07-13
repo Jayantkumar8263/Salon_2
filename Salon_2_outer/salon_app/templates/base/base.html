@@ -82,12 +82,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="#">About</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link"
-                       href="{% url 'appointment_form' %}">Appointments</a>
+                       href="{% url 'appointment_list' %}">Appointments</a>
                 </li>
 
                 <li class="nav-item">
@@ -106,16 +101,16 @@
 
                 </li>
 
-                {% comment %} <li class="nav-item ms-lg-2">
+                <li class="nav-item ms-lg-2">
 
-                    <a href="#"
+                    <a href="{% url 'profile' %}"
                        class="btn btn-gold">
 
-                        Book Now
+                        <i class="bi bi-person"></i>
 
                     </a>
 
-                </li> {% endcomment %}
+                </li> 
 
             </ul>
 
