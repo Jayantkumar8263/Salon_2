@@ -15,7 +15,7 @@ def home(request):
 # All services list
 def service_list(request):
     services = Service.objects.all()
-    return render(request, "service_list.html", {"services": services})
+    return render(request,"service_list.html",{"services": services})
 
 # Public working hours page (optional)
 def workinghours_view(request):

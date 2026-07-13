@@ -1,47 +1,527 @@
 {% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Our Team | Lumière Salon
+{% endblock %}
 
 {% block base %}
-<div class="container mt-4">
-    <h2>Our Staff</h2>
 
-    <div class="row">
-        {% for staff_profile in staff_profiles %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body text-center">
+<section class="staff-section py-5">
 
-                        {% if staff_profile.photo %}
-                            <img src="{{ staff_profile.photo.url }}"
-                                 alt="Profile photo"
-                                 class="rounded-circle mb-3"
-                                 style="width:100px; height:100px; object-fit:cover;">
-                        {% endif %}
+    <div class="container">
 
-                        <p>
-                            <strong>Name:</strong>
-                            {{ staff_profile.user.get_full_name|default:staff_profile.user.username }}
-                        </p>
+        <!-- ========================================= -->
+        <!-- PAGE HEADER -->
+        <!-- ========================================= -->
 
-                        <p>
-                            <strong>Bio:</strong>
-                            {{ staff_profile.bio|default:"-" }}
-                        </p>
+        <div class="page-header text-center mb-5">
 
-                        <p>
-                            <strong>Services:</strong>
-                            {% for service in staff_profile.services.all %}
-                                {{ service.service_name }}{% if not forloop.last %}, {% endif %}
-                            {% empty %}
-                                None set
-                            {% endfor %}
-                        </p>
+            <span class="section-subtitle">
+
+                Meet Our Professionals
+
+            </span>
+
+            <h2 class="page-title mt-3">
+
+                Our Expert Stylists
+
+            </h2>
+
+            <p class="page-description">
+
+                Our talented team of professionals is dedicated to providing
+                exceptional salon services and ensuring every visit is a
+                luxurious experience.
+
+            </p>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- SEARCH & FILTER -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mb-5">
+
+            <div class="row g-3 align-items-center">
+
+                <div class="col-lg-8">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-transparent border-end-0">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input type="text" class="form-control border-start-0"
+                            placeholder="Search by stylist name or specialization...">
 
                     </div>
+
                 </div>
+
+                <div class="col-lg-4">
+
+                    <select class="form-select">
+
+                        <option selected>
+
+                            All Services
+
+                        </option>
+
+                        <option>
+
+                            Hair Styling
+
+                        </option>
+
+                        <option>
+
+                            Hair Spa
+
+                        </option>
+
+                        <option>
+
+                            Hair Coloring
+
+                        </option>
+
+                        <option>
+
+                            Facial
+
+                        </option>
+
+                        <option>
+
+                            Makeup
+
+                        </option>
+
+                        <option>
+
+                            Beard Styling
+
+                        </option>
+
+                    </select>
+
+                </div>
+
             </div>
-        {% empty %}
-            <p>No staff profiles available.</p>
-        {% endfor %}
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- STAFF GRID -->
+        <!-- ========================================= -->
+
+        <div class="row g-4">
+
+            {% if staff_profiles %}
+
+            {% for staff in staff_profiles %}
+
+            <div class="col-lg-4 col-md-6">
+
+                <div class="staff-card">
+
+                    <!-- Staff Image -->
+
+                    <div class="staff-image">
+
+                        {% if staff.profile_picture %}
+
+                        <img src="{{ staff.profile_picture.url }}" alt="{{ staff.user.get_full_name }}"
+                            class="img-fluid">
+
+                        {% else %}
+
+                        <img src="{% static 'images/default-avatar.jpg' %}" alt="Default Staff" class="img-fluid">
+
+                        {% endif %}
+
+                        <div class="staff-overlay">
+
+                            <a href="{% url 'staff_detail' staff.pk %}" class="btn btn-gold">
+
+                                View Profile
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Staff Information -->
+
+                    <div class="staff-content">
+
+                        <h4>
+
+                            {{ staff.user.get_full_name }}
+
+                        </h4>
+
+                        <p class="staff-role">
+
+                            Professional Stylist
+
+                        </p>
+
+                        <div class="staff-rating">
+
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+
+                            <span>
+
+                                5.0
+
+                            </span>
+
+                        </div>
+                        <!-- ========================================= -->
+                        <!-- EXPERIENCE -->
+                        <!-- ========================================= -->
+
+                        {% if staff.experience %}
+
+                        <div class="staff-meta">
+
+                            <i class="bi bi-award-fill"></i>
+
+                            <span>
+
+                                {{ staff.experience }} Years Experience
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+                        <!-- ========================================= -->
+                        <!-- SPECIALIZATION -->
+                        <!-- ========================================= -->
+
+                        {% if staff.specialization %}
+
+                        <p class="staff-description">
+
+                            {{ staff.specialization }}
+
+                        </p>
+
+                        {% elif staff.bio %}
+
+                        <p class="staff-description">
+
+                            {{ staff.bio|truncatewords:20 }}
+
+                        </p>
+
+                        {% else %}
+
+                        <p class="staff-description">
+
+                            Experienced salon professional committed to providing
+                            high-quality beauty services with exceptional customer care.
+
+                        </p>
+
+                        {% endif %}
+
+                        <!-- ========================================= -->
+                        <!-- SERVICES -->
+                        <!-- ========================================= -->
+
+                        <div class="staff-services mt-4">
+
+                            <h6>
+
+                                Services Offered
+
+                            </h6>
+
+                            <div class="service-tags">
+
+                                {% for service in staff.Service.all %}
+
+                                <span class="service-tag">
+
+                                    {{ service.service_name }}
+
+                                </span>
+
+                                {% empty %}
+
+                                <span class="service-tag">
+
+                                    General Salon Services
+
+                                </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- CONTACT INFO -->
+                        <!-- ========================================= -->
+
+                        <div class="staff-contact mt-4">
+
+                            {% if staff.user.email %}
+
+                            <div class="contact-item">
+
+                                <i class="bi bi-envelope-fill"></i>
+
+                                <span>
+
+                                    {{ staff.user.email }}
+
+                                </span>
+
+                            </div>
+
+                            {% endif %}
+
+                            {% if staff.phone_number %}
+
+                            <div class="contact-item">
+
+                                <i class="bi bi-telephone-fill"></i>
+
+                                <span>
+
+                                    {{ staff.phone_number }}
+
+                                </span>
+
+                            </div>
+
+                            {% endif %}
+
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- ACTION BUTTON -->
+                        <!-- ========================================= -->
+
+                        <div class="staff-footer mt-4">
+
+                            <a href="{% url 'staff_detail' staff.pk %}" class="btn btn-gold w-100">
+
+                                <i class="bi bi-person-circle"></i>
+
+                                View Full Profile
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+            {% else %}
+
+            <div class="col-12">
+
+                <div class="empty-state text-center py-5">
+
+                    <div class="mb-4">
+
+                        <i class="bi bi-people display-1 text-muted"></i>
+
+                    </div>
+
+                    <h3>
+
+                        No Staff Members Available
+
+                    </h3>
+
+                    <p class="text-muted mb-4">
+
+                        Our professional team is currently being updated.
+                        Please check back again soon.
+
+                    </p>
+
+                    <a href="{% url 'service_list' %}" class="btn btn-gold">
+
+                        <i class="bi bi-scissors"></i>
+
+                        Browse Services
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- WHY CHOOSE OUR TEAM -->
+        <!-- ========================================= -->
+
+        <div class="row mt-5">
+
+            <div class="col-lg-12">
+
+                <div class="profile-card">
+
+                    <div class="row text-center">
+
+                        <div class="col-md-4 mb-4">
+
+                            <div class="feature-box">
+
+                                <i class="bi bi-award-fill feature-icon"></i>
+
+                                <h5>
+
+                                    Certified Experts
+
+                                </h5>
+
+                                <p>
+
+                                    Our stylists are professionally trained
+                                    with years of salon experience.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+
+                            <div class="feature-box">
+
+                                <i class="bi bi-stars feature-icon"></i>
+
+                                <h5>
+
+                                    Premium Experience
+
+                                </h5>
+
+                                <p>
+
+                                    We provide personalized beauty services
+                                    using modern techniques and premium
+                                    products.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+
+                            <div class="feature-box">
+
+                                <i class="bi bi-heart-fill feature-icon"></i>
+
+                                <h5>
+
+                                    Customer Satisfaction
+
+                                </h5>
+
+                                <p>
+
+                                    Every appointment is focused on delivering
+                                    comfort, quality and complete satisfaction.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- CALL TO ACTION -->
+        <!-- ========================================= -->
+
+        <div class="row mt-5">
+
+            <div class="col-lg-12">
+
+                <div class="cta-card text-center">
+
+                    <h2>
+
+                        Ready for Your Next Look?
+
+                    </h2>
+
+                    <p>
+
+                        Explore our professional salon services and book
+                        your appointment with one of our experienced stylists.
+
+                    </p>
+
+                    <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                        <a href="{% url 'service_list' %}" class="btn btn-gold">
+
+                            <i class="bi bi-scissors"></i>
+
+                            View Services
+
+                        </a>
+
+                        <a href="{% url 'create_appointment' %}" class="btn btn-outline-gold">
+
+                            <i class="bi bi-calendar-plus"></i>
+
+                            Book Appointment
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-</div>
+
+</section>
+
 {% endblock %}

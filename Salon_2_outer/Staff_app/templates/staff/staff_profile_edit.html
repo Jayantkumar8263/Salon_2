@@ -1,32 +1,1427 @@
 {% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
 {% block base %}
-<div class="container mt-4">
-    <h2>Edit Staff Profile</h2>
 
-    <form method="post" enctype="multipart/form-data" class="mt-3">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+<section class="staff-profile-section py-5">
 
-        <div class="mb-3">
-            {{ form.photo.label_tag }}
-            {{ form.photo }}
-            {{ form.photo.errors }}
+    <div class="container">
+
+        <!-- ========================================= -->
+        <!-- PAGE HEADER -->
+        <!-- ========================================= -->
+
+        <div class="page-header mb-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <h2 class="page-title">
+
+                        My Profile
+
+                    </h2>
+
+                    <p class="page-subtitle">
+
+                        Welcome back, {{ request.user.first_name }}.
+                        Manage your profile and view your professional information.
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <a href="{% url 'staff_profile_edit' %}" class="btn btn-gold">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        Edit Profile
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="mb-3">
-            {{ form.bio.label_tag }}
-            {{ form.bio }}
-            {{ form.bio.errors }}
+        <!-- ========================================= -->
+        <!-- PROFILE CARD -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mb-5">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-3 text-center">
+
+                    {% if staff_profile.profile_picture %}
+
+                    <img src="{{ staff_profile.profile_picture.url }}"
+                        class="staff-profile-image img-fluid rounded-circle" alt="{{ request.user.get_full_name }}">
+
+                    {% else %}
+
+                    <img src="{% static 'images/default-avatar.jpg' %}"
+                        class="staff-profile-image img-fluid rounded-circle" alt="Default Profile">
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-lg-6">
+
+                    <h2>
+
+                        {{ request.user.get_full_name }}
+
+                    </h2>
+
+                    <p class="staff-role">
+
+                        Salon Staff Member
+
+                    </p>
+
+                    <div class="staff-rating">
+
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+
+                        <span class="ms-2">
+
+                            Professional Staff
+
+                        </span>
+
+                    </div>
+
+                    {% if staff_profile.specialization %}
+
+                    <p class="mt-3">
+
+                        <i class="bi bi-scissors text-warning"></i>
+
+                        {{ staff_profile.specialization }}
+
+                    </p>
+
+                    {% endif %}
+
+                    {% if staff_profile.experience %}
+
+                    <p>
+
+                        <i class="bi bi-award-fill text-warning"></i>
+
+                        {{ staff_profile.experience }} Years Experience
+
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="col-lg-3 text-lg-end">
+
+                    <a href="{% url 'appointment_list' %}" class="btn btn-outline-gold w-100 mb-3">
+
+                        <i class="bi bi-calendar-check"></i>
+
+                        Appointments
+
+                    </a>
+
+                    <a href="{% url 'staff_profile_edit' %}" class="btn btn-gold w-100">
+
+                        <i class="bi bi-pencil-square"></i>
+
+                        Update Profile
+
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="mb-3">
-            {{ form.services.label_tag }}
-            {{ form.services }}
-            {{ form.services.errors }}
+        <!-- ========================================= -->
+        <!-- DASHBOARD CARDS -->
+        <!-- ========================================= -->
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-scissors"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ services.count }}
+
+                    </h3>
+
+                    <p>
+
+                        Services
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-person-check"></i>
+
+                    </div>
+
+                    <h3>
+
+                        Active
+
+                    </h3>
+
+                    <p>
+
+                        Status
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-award-fill"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ staff_profile.experience|default:"0" }}
+
+                    </h3>
+
+                    <p>
+
+                        Years Experience
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-star-fill"></i>
+
+                    </div>
+
+                    <h3>
+
+                        5.0
+
+                    </h3>
+
+                    <p>
+
+                        Rating
+
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <a href="{% url 'staff_profile' %}" class="btn btn-secondary ms-2">Cancel</a>
-    </form>
-</div>
+        <!-- ========================================= -->
+        <!-- PERSONAL INFORMATION -->
+        <!-- ========================================= -->
+
+        <div class="row">
+
+            <div class="col-lg-6">
+
+                <div class="profile-card">
+
+                    <div class="card-header-custom">
+
+                        <h4>
+
+                            Personal Information
+
+                        </h4>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Full Name
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.get_full_name }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Username
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.username }}
+
+                            </span>
+
+                        </div>
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Email
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.email }}
+
+                            </span>
+
+                        </div>
+
+                        {% if staff_profile.phone_number %}
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Phone
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ staff_profile.phone_number }}
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+                        <!-- ========================================= -->
+                        <!-- ADDRESS -->
+                        <!-- ========================================= -->
+
+                        {% if staff_profile.address %}
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Address
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ staff_profile.address }}
+
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Account Type
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                Staff Member
+
+                            </span>
+
+                        </div>
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Joined
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.date_joined|date:"d M Y" }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- ABOUT ME -->
+            <!-- ========================================= -->
+
+            <div class="col-lg-6">
+
+                <div class="profile-card h-100">
+
+                    <div class="card-header-custom">
+
+                        <h4>
+
+                            About Me
+
+                        </h4>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        {% if staff_profile.bio %}
+
+                        <p>
+
+                            {{ staff_profile.bio }}
+
+                        </p>
+
+                        {% else %}
+
+                        <p>
+
+                            Welcome to my professional profile.
+                            I am committed to delivering excellent salon services and ensuring
+                            every customer enjoys a premium experience.
+
+                        </p>
+
+                        {% endif %}
+
+                        {% if staff_profile.specialization %}
+
+                        <hr>
+
+                        <h6>
+
+                            Specialization
+
+                        </h6>
+
+                        <p>
+
+                            {{ staff_profile.specialization }}
+
+                        </p>
+
+                        {% endif %}
+
+                        {% if staff_profile.experience %}
+
+                        <hr>
+
+                        <h6>
+
+                            Professional Experience
+
+                        </h6>
+
+                        <p>
+
+                            {{ staff_profile.experience }}
+
+                            Years of Professional Experience
+
+                        </p>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- SERVICES PROVIDED -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Services I Provide
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    {% for service in services %}
+
+                    <div class="col-lg-4 col-md-6 mb-4">
+
+                        <div class="service-card">
+
+                            <h5>
+
+                                {{ service.service_name }}
+
+                            </h5>
+
+                            <p>
+
+                                {{ service.description|truncatewords:15 }}
+
+                            </p>
+
+                            <div class="d-flex justify-content-between">
+
+                                <span class="service-price">
+
+                                    ₹{{ service.price }}
+
+                                </span>
+
+                                <span class="service-duration">
+
+                                    {{ service.duration }} min
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% empty %}
+
+                    <div class="col-12">
+
+                        <div class="alert alert-warning text-center">
+
+                            No services have been assigned yet.
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- WORKING HOURS -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Working Hours
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                {% if staff_profile.working_hours.all %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+
+                                    Day
+
+                                </th>
+
+                                <th>
+
+                                    Start Time
+
+                                </th>
+
+                                <th>
+
+                                    End Time
+
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for hour in staff_profile.working_hours.all %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ hour.get_day_of_week_display }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ hour.start_time }}
+
+                                </td>
+
+                                <td>
+
+                                    {{ hour.end_time }}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {% else %}
+
+                <div class="text-center py-4">
+
+                    <i class="bi bi-clock-history display-5 text-muted"></i>
+
+                    <p class="mt-3">
+
+                        Working hours have not been updated.
+
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- PROFESSIONAL SKILLS -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Professional Skills
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6>
+
+                            Hair Styling
+
+                        </h6>
+
+                        <div class="progress">
+
+                            <div class="progress-bar bg-warning" style="width:95%">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6>
+
+                            Hair Coloring
+
+                        </h6>
+
+                        <div class="progress">
+
+                            <div class="progress-bar bg-warning" style="width:90%">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6>
+
+                            Facial Treatment
+
+                        </h6>
+
+                        <div class="progress">
+
+                            <div class="progress-bar bg-warning" style="width:88%">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <h6>
+
+                            Customer Satisfaction
+
+                        </h6>
+
+                        <div class="progress">
+
+                            <div class="progress-bar bg-warning" style="width:98%">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ========================================= -->
+        <!-- PERFORMANCE SUMMARY -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Performance Summary
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row text-center">
+
+                    <div class="col-lg-3 col-md-6 mb-4">
+
+                        <div class="performance-box">
+
+                            <i class="bi bi-calendar-check display-5 text-warning"></i>
+
+                            <h3 class="mt-3">
+
+                                {{ staff_profile.Staff_appointments.count }}
+
+                            </h3>
+
+                            <p>
+
+                                Total Appointments
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-4">
+
+                        <div class="performance-box">
+
+                            <i class="bi bi-scissors display-5 text-warning"></i>
+
+                            <h3 class="mt-3">
+
+                                {{ services.count }}
+
+                            </h3>
+
+                            <p>
+
+                                Services Offered
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-4">
+
+                        <div class="performance-box">
+
+                            <i class="bi bi-star-fill display-5 text-warning"></i>
+
+                            <h3 class="mt-3">
+
+                                5.0
+
+                            </h3>
+
+                            <p>
+
+                                Customer Rating
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 mb-4">
+
+                        <div class="performance-box">
+
+                            <i class="bi bi-award-fill display-5 text-warning"></i>
+
+                            <h3 class="mt-3">
+
+                                {{ staff_profile.experience|default:"0" }}
+
+                            </h3>
+
+                            <p>
+
+                                Years Experience
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- QUICK ACTIONS -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Quick Actions
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-4">
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'staff_profile_edit' %}" class="action-card">
+
+                            <i class="bi bi-pencil-square"></i>
+
+                            <span>
+
+                                Edit Profile
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'appointment_list' %}" class="action-card">
+
+                            <i class="bi bi-calendar-week"></i>
+
+                            <span>
+
+                                My Appointments
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'service_list' %}" class="action-card">
+
+                            <i class="bi bi-scissors"></i>
+
+                            <span>
+
+                                View Services
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'home' %}" class="action-card">
+
+                            <i class="bi bi-house-door"></i>
+
+                            <span>
+
+                                Home
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- ACCOUNT OVERVIEW -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Account Overview
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Account Status
+
+                            </span>
+
+                            <span class="badge bg-success">
+
+                                Active
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                User Role
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                Staff Member
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Last Login
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.last_login|date:"d M Y h:i A" }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Member Since
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.date_joined|date:"d M Y" }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- ========================================= -->
+        <!-- HELPFUL INFORMATION -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Professional Guidelines
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-4 text-center mb-4">
+
+                        <i class="bi bi-clock-history display-5 text-warning"></i>
+
+                        <h5 class="mt-3">
+
+                            Be Punctual
+
+                        </h5>
+
+                        <p>
+
+                            Arrive before your scheduled shift and
+                            ensure appointments start on time.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4 text-center mb-4">
+
+                        <i class="bi bi-person-heart display-5 text-warning"></i>
+
+                        <h5 class="mt-3">
+
+                            Customer First
+
+                        </h5>
+
+                        <p>
+
+                            Deliver a premium salon experience
+                            by maintaining professionalism
+                            and excellent communication.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-md-4 text-center mb-4">
+
+                        <i class="bi bi-shield-check display-5 text-warning"></i>
+
+                        <h5 class="mt-3">
+
+                            Hygiene
+
+                        </h5>
+
+                        <p>
+
+                            Follow salon hygiene protocols
+                            and sanitize equipment after
+                            every appointment.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- ACCOUNT SECURITY -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Account Security
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Username
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.username }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Email
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.email }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Last Login
+
+                            </span>
+
+                            <span class="detail-value">
+
+                                {{ request.user.last_login|date:"d M Y h:i A" }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="detail-item">
+
+                            <span class="detail-label">
+
+                                Account Status
+
+                            </span>
+
+                            <span class="badge bg-success">
+
+                                Active
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- QUICK LINKS -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="card-header-custom">
+
+                <h4>
+
+                    Quick Links
+
+                </h4>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-4">
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'staff_profile_edit' %}" class="action-card">
+
+                            <i class="bi bi-person-gear"></i>
+
+                            <span>
+
+                                Update Profile
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'staff_list' %}" class="action-card">
+
+                            <i class="bi bi-people"></i>
+
+                            <span>
+
+                                Staff Directory
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'service_list' %}" class="action-card">
+
+                            <i class="bi bi-scissors"></i>
+
+                            <span>
+
+                                Salon Services
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+
+                        <a href="{% url 'home' %}" class="action-card">
+
+                            <i class="bi bi-house-door-fill"></i>
+
+                            <span>
+
+                                Dashboard
+
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- LOGOUT -->
+        <!-- ========================================= -->
+
+        <div class="profile-card mt-5">
+
+            <div class="text-center">
+
+                <h3>
+
+                    Finished for Today?
+
+                </h3>
+
+                <p class="text-muted">
+
+                    Securely sign out of your staff account.
+
+                </p>
+
+                <a href="{% url 'logout' %}" class="btn btn-danger btn-lg">
+
+                    <i class="bi bi-box-arrow-right"></i>
+
+                    Logout
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <!-- ========================================= -->
+        <!-- FOOTER MESSAGE -->
+        <!-- ========================================= -->
+
+        <div class="text-center mt-5">
+
+            <small class="text-muted">
+
+                Lumière Salon Staff Portal • Excellence Through Professionalism
+
+            </small>
+
+        </div>
+
+    </div>
+
+</section>
+
 {% endblock %}

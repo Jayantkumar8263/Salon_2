@@ -1,88 +1,272 @@
 {% extends "base/base.html" %}
 {% load static %}
 
+{% block title %}
+Edit Profile | Salon
+{% endblock %}
+
 {% block base %}
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col text-center">
-            <h1 class="fw-bold">Edit Profile</h1>
-        </div>
-    </div>
 
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-0 shadow rounded-0">
-                <div class="card-body p-4">
+<section class="profile-edit-section py-5">
 
-                    <form method="post" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
+    <div class="container">
 
-                        <h5 class="fw-bold mb-3">Account Details</h5>
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            {{ user_form.username }}
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            {{ user_form.email }}
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">First Name</label>
-                            {{ user_form.first_name }}
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Last Name</label>
-                            {{ user_form.last_name }}
-                        </div>
+        <form method="POST" enctype="multipart/form-data">
 
-                        <h5 class="fw-bold mt-4 mb-3">Contact Details</h5>
-                        <div class="mb-3">
-                            <label class="form-label">Phone Number</label>
-                            {{ profile_form.phone_number }}
-                        </div>
-                        <h5 class="fw-bold mt-4 mb-3">Profile Images</h5>
+            {% csrf_token %}
 
-                        <div class="mb-3">
-                            <label class="form-label">Banner Image</label>
-                            {{ profile_form.banner }}
-                            {% if request.user.customer_profile.banner %}
-                            <div class="mt-2">
-                                <img src="{{ request.user.customer_profile.banner.url }}" alt="Current banner"
-                                    class="img-fluid rounded">
-                            </div>
-                            {% endif %}
-                        </div>
+            <!-- ================================= -->
+            <!-- PROFILE HEADER -->
+            <!-- ================================= -->
 
-                        <div class="mb-3">
-                            <label class="form-label">Avatar Image</label>
-                            {{ profile_form.avatar }}
-                            {% if request.user.customer_profile.avatar %}
-                            <div class="mt-2">
-                                <img src="{{ request.user.customer_profile.avatar.url }}" alt="Current avatar"
-                                    class="rounded-circle border" style="width: 80px; height: 80px; object-fit: cover;">
-                            </div>
-                            {% endif %}
-                        </div>
-                        
-                        {% if user_form.non_field_errors or profile_form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ user_form.non_field_errors }}
-                            {{ profile_form.non_field_errors }}
-                        </div>
+            <div class="profile-banner mb-5">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-2 text-center">
+
+                        {% if profile_form.instance.profile_picture %}
+
+                        <img src="{{ profile_form.instance.profile_picture.url }}" class="profile-avatar" alt="Profile">
+
+                        {% else %}
+
+                        <img src="{% static 'images/default-avatar.png' %}" class="profile-avatar" alt="Profile">
+
                         {% endif %}
 
-                        <div class="d-flex justify-content-between mt-4">
-                            <a href="{% url 'profile' %}" class="btn btn-secondary rounded-0">
-                                Cancel
-                            </a>
-                            <button type="submit" class="btn btn-secondary rounded-0">
-                                Save Changes
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+
+                    <div class="col-lg-7">
+
+                        <h2 class="profile-name">
+
+                            {{ request.user.get_full_name|default:request.user.username }}
+
+                        </h2>
+
+                        <p class="profile-email">
+
+                            {{ request.user.email }}
+
+                        </p>
+
+                        <span class="badge bg-success">
+
+                            Customer Account
+
+                        </span>
+
+                    </div>
+
+                    <div class="col-lg-3 text-lg-end">
+
+                        <a href="{% url 'profile' %}" class="btn btn-outline-gold">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
                 </div>
+
             </div>
-        </div>
+
+            <!-- ================================= -->
+            <!-- USER INFORMATION -->
+            <!-- ================================= -->
+
+            <div class="profile-card mb-5">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        User Information
+
+                    </h4>
+
+                </div>
+
+                <div class="row mt-4">
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label">
+
+                            First Name
+
+                        </label>
+
+                        {{ user_form.first_name }}
+
+                        {% for error in user_form.first_name.errors %}
+
+                        <div class="text-danger">
+
+                            {{ error }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label">
+
+                            Last Name
+
+                        </label>
+
+                        {{ user_form.last_name }}
+
+                        {% for error in user_form.last_name.errors %}
+
+                        <div class="text-danger">
+
+                            {{ error }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label">
+
+                            Username
+
+                        </label>
+
+                        {{ user_form.username }}
+
+                        {% for error in user_form.username.errors %}
+
+                        <div class="text-danger">
+
+                            {{ error }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label">
+
+                            Email Address
+
+                        </label>
+
+                        {{ user_form.email }}
+
+                        {% for error in user_form.email.errors %}
+
+                        <div class="text-danger">
+
+                            {{ error }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ================================= -->
+            <!-- CUSTOMER PROFILE -->
+            <!-- ================================= -->
+
+            <div class="profile-card">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        Customer Profile
+
+                    </h4>
+
+                </div>
+
+                <div class="row mt-4">
+
+                    {% for field in profile_form %}
+
+                    <div class="col-md-6 mb-4">
+
+                        <label class="form-label">
+
+                            {{ field.label }}
+
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+
+                        <small class="text-muted">
+
+                            {{ field.help_text }}
+
+                        </small>
+
+                        {% endif %}
+
+                        {% for error in field.errors %}
+
+                        <div class="text-danger">
+
+                            {{ error }}
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+                <!-- ================================= -->
+                <!-- ACTION BUTTONS -->
+                <!-- ================================= -->
+
+                <div class="d-flex justify-content-end mt-4 gap-3">
+
+                    <a href="{% url 'profile' %}" class="btn btn-outline-gold">
+
+                        Cancel
+
+                    </a>
+
+                    <button type="submit" class="btn btn-gold">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
     </div>
-</div>
-{% endblock base %}
+
+</section>
+
+{% endblock %}

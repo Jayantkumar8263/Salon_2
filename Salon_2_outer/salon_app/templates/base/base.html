@@ -76,8 +76,8 @@
             <ul class="navbar-nav ms-auto align-items-lg-center">
 
                 <li class="nav-item">
-                    <a class="nav-link"
-                       href="#">Services</a>
+                    <a class="nav-link "
+                        href="{% url 'service_list' %}">Services</a>
                 </li>
 
                 <li class="nav-item">
@@ -87,17 +87,17 @@
 
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="#">Gallery</a>
+                       href="{% url 'appointment_form' %}">Appointments</a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link"
-                       href="#">Contact</a>
+                       href="{% url 'staff_profiles' %}">Staff</a>
                 </li>
 
                 <li class="nav-item ms-lg-3">
 
-                    <a href="#"
+                    <a href="{% url 'signin' %}"
                        class="btn btn-outline-gold">
 
                         Sign In
@@ -106,7 +106,7 @@
 
                 </li>
 
-                <li class="nav-item ms-lg-2">
+                {% comment %} <li class="nav-item ms-lg-2">
 
                     <a href="#"
                        class="btn btn-gold">
@@ -115,7 +115,7 @@
 
                     </a>
 
-                </li>
+                </li> {% endcomment %}
 
             </ul>
 
@@ -177,7 +177,7 @@
 
                 <p>
 
-                    Toronto, Canada
+                    Chhattisgarh, Bhilai, India
 
                     <br>
 

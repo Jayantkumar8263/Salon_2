@@ -1,23 +1,1036 @@
-{% extends 'base/base.html' %}
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Appointment Details
+{% endblock %}
 
 {% block base %}
-<div class="container-fluid bg-dark py-5 ">
+
+<section class="appointment-detail-section py-5">
+
   <div class="container">
-    <div class="card bg-muted border-0 shadow rounded-0">
-      <div class="card-body">
-        <h1 class="text-center fw-bold text-dark my-4">Appointment details </h1>
-        <!-- Appointment details list -->
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><strong>Appointment ID:</strong> {{ appointment.id }}</li>
-          <li class="list-group-item"><strong>Customer Name:</strong> {{ appointment.customer_name }}</li>
-          <li class="list-group-item"><strong>Service:</strong> {{ appointment.service }}</li>
-          <li class="list-group-item"><strong>Date:</strong> {{ appointment.date }}</li>
-          <li class="list-group-item"><strong>Time:</strong> {{ appointment.time }}</li>
-          <li class="list-group-item"><strong>Stylist:</strong> {{ appointment.stylist }}</li>
-          <li class="list-group-item"><strong>Status:</strong> {{ appointment.status }}</li>
-        </ul>
+
+    <!-- ======================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ======================================= -->
+
+    <div class="page-header mb-5">
+
+      <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+          <h2 class="page-title">
+
+            Appointment Details
+
+          </h2>
+
+          <p class="page-subtitle">
+
+            View complete details about your salon appointment.
+
+          </p>
+
+        </div>
+
+        <div class="col-lg-4 text-lg-end">
+
+          <a href="{% url 'appointment_list' %}" class="btn btn-outline-gold">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Back
+
+          </a>
+
+        </div>
+
       </div>
+
     </div>
-  </div>
-</div>
-{% endblock base %}
+
+    <!-- ======================================= -->
+    <!-- APPOINTMENT SUMMARY -->
+    <!-- ======================================= -->
+
+    <div class="profile-card mb-5">
+
+      <div class="row align-items-center">
+
+        <div class="col-lg-8">
+
+          <h3>
+
+            {{ appointment.service.service_name }}
+
+          </h3>
+
+          <p class="text-muted">
+
+            Booked on
+
+            {{ appointment.booked_at|date:"d M Y" }}
+
+          </p>
+
+        </div>
+
+        <div class="col-lg-4 text-lg-end">
+
+          {% if appointment.status == "Pending" %}
+
+          <span class="badge bg-warning text-dark">
+
+            Pending
+
+          </span>
+
+          {% elif appointment.status == "Confirmed" %}
+
+          <span class="badge bg-success">
+
+            Confirmed
+
+          </span>
+
+          {% elif appointment.status == "Completed" %}
+
+          <span class="badge bg-primary">
+
+            Completed
+
+          </span>
+
+          {% elif appointment.status == "Cancelled" %}
+
+          <span class="badge bg-danger">
+
+            Cancelled
+
+          </span>
+
+          {% else %}
+
+          <span class="badge bg-secondary">
+
+            {{ appointment.status }}
+
+          </span>
+
+          {% endif %}
+
+        </div>
+
+      </div>
+
+      <hr>
+
+      <div class="row gy-4">
+
+        <div class="col-md-6">
+
+          <div class="summary-item">
+
+            <i class="bi bi-calendar-event"></i>
+
+            <div>
+
+              <small class="text-muted">
+
+                Appointment Date
+
+              </small>
+
+              <h6>
+
+                {{ appointment.start_time|date:"d M Y" }}
+
+              </h6>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="summary-item">
+
+            <i class="bi bi-clock"></i>
+
+            <div>
+
+              <small class="text-muted">
+
+                Appointment Time
+
+              </small>
+
+              <h6>
+
+                {{ appointment.start_time|time:"h:i A" }}
+
+              </h6>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="summary-item">
+
+            <i class="bi bi-scissors"></i>
+
+            <div>
+
+              <small class="text-muted">
+
+                Service
+
+              </small>
+
+              <h6>
+
+                {{ appointment.service.service_name }}
+
+              </h6>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+          <div class="summary-item">
+
+            <i class="bi bi-currency-rupee"></i>
+
+            <div>
+
+              <small class="text-muted">
+
+                Price
+
+              </small>
+
+              <h6>
+
+                ₹{{ appointment.service.price }}
+
+              </h6>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================= -->
+    <!-- QUICK ACTIONS -->
+    <!-- ======================================= -->
+
+    <div class="profile-card mb-5">
+
+      <div class="card-header-custom">
+
+        <h4>
+
+          Quick Actions
+
+        </h4>
+
+      </div>
+
+      <div class="row mt-4 g-3">
+
+        <div class="col-lg-4">
+
+          <a href="{% url 'appointment_edit' appointment.pk %}" class="action-card">
+
+            <i class="bi bi-pencil-square"></i>
+
+            <span>
+
+              Edit Appointment
+
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+          <a href="{% url 'appointment_cancel' appointment.pk %}" class="action-card">
+
+            <i class="bi bi-x-circle"></i>
+
+            <span>
+
+              Cancel Appointment
+
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-lg-4">
+
+          <a href="{% url 'appointment_list' %}" class="action-card">
+
+            <i class="bi bi-card-list"></i>
+
+            <span>
+
+              All Appointments
+
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ======================================= -->
+    <!-- DETAILS -->
+    <!-- ======================================= -->
+
+    <div class="row">
+      <!-- ======================================= -->
+      <!-- CUSTOMER INFORMATION -->
+      <!-- ======================================= -->
+
+      <div class="col-lg-6 mb-4">
+
+        <div class="profile-card h-100">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Customer Information
+
+            </h4>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Full Name
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.customer.user.get_full_name }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Username
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.customer.user.username }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Email
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.customer.user.email }}
+
+              </span>
+
+            </div>
+
+            {% if appointment.customer.phone_number %}
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Phone
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.customer.phone_number }}
+
+              </span>
+
+            </div>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- STAFF INFORMATION -->
+      <!-- ======================================= -->
+
+      <div class="col-lg-6 mb-4">
+
+        <div class="profile-card h-100">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Staff Information
+
+            </h4>
+
+          </div>
+
+          <div class="card-body">
+
+            {% if appointment.staff %}
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Staff Member
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.staff.user.get_full_name }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Username
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.staff.user.username }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Email
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.staff.user.email }}
+
+              </span>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+              <i class="bi bi-person-x fs-1 text-muted"></i>
+
+              <h5 class="mt-3">
+
+                Staff Not Assigned
+
+              </h5>
+
+              <p class="text-muted">
+
+                A staff member will be assigned after your
+                appointment is confirmed.
+
+              </p>
+
+            </div>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- SERVICE DETAILS -->
+      <!-- ======================================= -->
+
+      <div class="col-lg-6 mb-4">
+
+        <div class="profile-card h-100">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Service Details
+
+            </h4>
+
+          </div>
+
+          <div class="card-body">
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Service
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.service.service_name }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Duration
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.service.duration }} Minutes
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Price
+
+              </span>
+
+              <span class="detail-value text-success">
+
+                ₹{{ appointment.service.price }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Description
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.service.description }}
+
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- PAYMENT DETAILS -->
+      <!-- ======================================= -->
+
+      <div class="col-lg-6 mb-4">
+
+        <div class="profile-card h-100">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Payment Details
+
+            </h4>
+
+          </div>
+
+          <div class="card-body">
+
+            {% if appointment.payment %}
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Amount
+
+              </span>
+
+              <span class="detail-value">
+
+                ₹{{ appointment.payment.amount }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Status
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.payment.status }}
+
+              </span>
+
+            </div>
+
+            <div class="detail-item">
+
+              <span class="detail-label">
+
+                Payment Date
+
+              </span>
+
+              <span class="detail-value">
+
+                {{ appointment.payment.payment_date|date:"d M Y" }}
+
+              </span>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+              <i class="bi bi-credit-card fs-1 text-muted"></i>
+
+              <h5 class="mt-3">
+
+                Payment Pending
+
+              </h5>
+
+              <p class="text-muted">
+
+                Payment information will appear after payment
+                is completed.
+
+              </p>
+
+            </div>
+
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- NOTES -->
+      <!-- ======================================= -->
+
+      {% if appointment.notes %}
+
+      <div class="col-lg-12">
+
+        <div class="profile-card">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Additional Notes
+
+            </h4>
+
+          </div>
+
+          <div class="card-body">
+
+            <p class="mb-0">
+
+              {{ appointment.notes }}
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {% endif %}
+      <!-- ======================================= -->
+      <!-- APPOINTMENT TIMELINE -->
+      <!-- ======================================= -->
+
+      <div class="row mt-5">
+
+        <div class="col-lg-6 mb-4">
+
+          <div class="profile-card">
+
+            <div class="card-header-custom">
+
+              <h4>
+
+                Appointment Timeline
+
+              </h4>
+
+            </div>
+
+            <div class="card-body">
+
+              <div class="timeline">
+
+                <div class="timeline-item">
+
+                  <div class="timeline-icon bg-primary">
+
+                    <i class="bi bi-calendar-plus"></i>
+
+                  </div>
+
+                  <div class="timeline-content">
+
+                    <h6>
+
+                      Appointment Booked
+
+                    </h6>
+
+                    <p>
+
+                      {{ appointment.booked_at|date:"d M Y" }}
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div class="timeline-item">
+
+                  <div class="timeline-icon bg-warning">
+
+                    <i class="bi bi-hourglass-split"></i>
+
+                  </div>
+
+                  <div class="timeline-content">
+
+                    <h6>
+
+                      Current Status
+
+                    </h6>
+
+                    <p>
+
+                      {{ appointment.status }}
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div class="timeline-item">
+
+                  <div class="timeline-icon bg-success">
+
+                    <i class="bi bi-calendar-check"></i>
+
+                  </div>
+
+                  <div class="timeline-content">
+
+                    <h6>
+
+                      Appointment Schedule
+
+                    </h6>
+
+                    <p>
+
+                      {{ appointment.start_time|date:"d M Y" }}
+
+                      <br>
+
+                      {{ appointment.start_time|time:"h:i A" }}
+
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- BOOKING POLICIES -->
+        <!-- ======================================= -->
+
+        <div class="col-lg-6 mb-4">
+
+          <div class="profile-card">
+
+            <div class="card-header-custom">
+
+              <h4>
+
+                Booking Policies
+
+              </h4>
+
+            </div>
+
+            <div class="card-body">
+
+              <ul class="booking-policy-list">
+
+                <li>
+
+                  Please arrive at least
+                  <strong>10 minutes</strong>
+                  before your appointment.
+
+                </li>
+
+                <li>
+
+                  Appointments may be cancelled if you are
+                  more than
+                  <strong>15 minutes late.</strong>
+
+                </li>
+
+                <li>
+
+                  Cancellation is allowed up to
+                  <strong>24 hours</strong>
+                  before the appointment.
+
+                </li>
+
+                <li>
+
+                  Premium services may require advance payment.
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- HELP & SUPPORT -->
+      <!-- ======================================= -->
+
+      <div class="profile-card mt-4">
+
+        <div class="card-header-custom">
+
+          <h4>
+
+            Help & Support
+
+          </h4>
+
+        </div>
+
+        <div class="card-body">
+
+          <div class="row">
+
+            <div class="col-md-4 text-center mb-3">
+
+              <i class="bi bi-telephone-fill fs-2 text-warning"></i>
+
+              <h6 class="mt-3">
+
+                Call Salon
+
+              </h6>
+
+              <p>
+
+                Contact us for urgent appointment changes.
+
+              </p>
+
+            </div>
+
+            <div class="col-md-4 text-center mb-3">
+
+              <i class="bi bi-envelope-fill fs-2 text-warning"></i>
+
+              <h6 class="mt-3">
+
+                Email Support
+
+              </h6>
+
+              <p>
+
+                Send us your questions anytime.
+
+              </p>
+
+            </div>
+
+            <div class="col-md-4 text-center mb-3">
+
+              <i class="bi bi-chat-dots-fill fs-2 text-warning"></i>
+
+              <h6 class="mt-3">
+
+                Live Assistance
+
+              </h6>
+
+              <p>
+
+                Get quick responses from our support team.
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ======================================= -->
+      <!-- ACTION BUTTONS -->
+      <!-- ======================================= -->
+
+      <div class="d-flex justify-content-center flex-wrap gap-3 mt-5">
+
+        <a href="{% url 'appointment_list' %}" class="btn btn-outline-gold">
+
+          <i class="bi bi-arrow-left"></i>
+
+          Back to Appointments
+
+        </a>
+
+        {% if appointment.status == "Pending" or appointment.status == "Confirmed" %}
+
+        <a href="{% url 'appointment_edit' appointment.pk %}" class="btn btn-outline-primary">
+
+          <i class="bi bi-pencil-square"></i>
+
+          Edit
+
+        </a>
+
+        <a href="{% url 'appointment_cancel' appointment.pk %}" class="btn btn-outline-danger">
+
+          <i class="bi bi-x-circle"></i>
+
+          Cancel Appointment
+
+        </a>
+
+        {% endif %}
+
+        <button class="btn btn-gold" onclick="window.print()">
+
+          <i class="bi bi-printer-fill"></i>
+
+          Print
+
+        </button>
+
+      </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,24 +1,620 @@
 {% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Staff Registration
+{% endblock %}
+
 {% block base %}
-<div class="container mt-4">
-    <h2>Staff Registration</h2>
 
-    <form method="post" class="mt-3">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+<section class="staff-registration-section py-5">
 
-        {% for field in form %}
-            <div class="mb-3">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.help_text %}
-                    <small class="form-text text-muted">{{ field.help_text }}</small>
-                {% endif %}
-                {{ field.errors }}
+    <div class="container">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <!-- ========================================= -->
+            <!-- PAGE HEADER -->
+            <!-- ========================================= -->
+
+            <div class="page-header mb-5">
+
+                <div class="row align-items-center">
+
+                    <div class="col-lg-8">
+
+                        <h2 class="page-title">
+
+                            Staff Registration
+
+                        </h2>
+
+                        <p class="page-subtitle">
+
+                            Create a new staff account for your salon team. After registration,
+                            the staff member will be able to log in and manage their profile.
+
+                        </p>
+
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+
+                        <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-gold">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Back to Dashboard
+
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
-        {% endfor %}
 
-        <button type="submit" class="btn btn-primary">Create staff account</button>
-    </form>
-</div>
+            <!-- ========================================= -->
+            <!-- REGISTRATION CARD -->
+            <!-- ========================================= -->
+
+            <div class="profile-card mb-5">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        Basic Account Information
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <!-- Username -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Username
+
+                            </label>
+
+                            {{ form.username }}
+
+                            {% for error in form.username.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- First Name -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                First Name
+
+                            </label>
+
+                            {{ form.first_name }}
+
+                            {% for error in form.first_name.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- Last Name -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Last Name
+
+                            </label>
+
+                            {{ form.last_name }}
+
+                            {% for error in form.last_name.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- Email -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Email Address
+
+                            </label>
+
+                            {{ form.email }}
+
+                            {% for error in form.email.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+                        <!-- ========================================= -->
+                        <!-- PASSWORD -->
+                        <!-- ========================================= -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Password
+
+                            </label>
+
+                            {{ form.password1 }}
+
+                            {% for error in form.password1.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- CONFIRM PASSWORD -->
+                        <!-- ========================================= -->
+
+                        <div class="col-md-6 mb-4">
+
+                            <label class="form-label">
+
+                                Confirm Password
+
+                            </label>
+
+                            {{ form.password2 }}
+
+                            {% for error in form.password2.errors %}
+
+                            <div class="text-danger mt-2">
+
+                                {{ error }}
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- ========================================= -->
+                        <!-- NON FIELD ERRORS -->
+                        <!-- ========================================= -->
+
+                        {% if form.non_field_errors %}
+
+                        <div class="col-12">
+
+                            <div class="alert alert-danger">
+
+                                <i class="bi bi-exclamation-circle-fill me-2"></i>
+
+                                {% for error in form.non_field_errors %}
+
+                                <p class="mb-1">
+
+                                    {{ error }}
+
+                                </p>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- ACCOUNT INFORMATION -->
+            <!-- ========================================= -->
+
+            <div class="profile-card mb-5">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        Staff Account Information
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="info-box">
+
+                                <i class="bi bi-person-badge-fill text-warning fs-2"></i>
+
+                                <h5 class="mt-3">
+
+                                    Staff Access
+
+                                </h5>
+
+                                <p>
+
+                                    The new account will have staff privileges
+                                    and can securely log in to the staff portal.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="info-box">
+
+                                <i class="bi bi-person-lines-fill text-warning fs-2"></i>
+
+                                <h5 class="mt-3">
+
+                                    Complete Profile
+
+                                </h5>
+
+                                <p>
+
+                                    After registration, the staff member should
+                                    complete their professional profile and upload
+                                    a profile picture.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- REGISTRATION GUIDELINES -->
+            <!-- ========================================= -->
+
+            <div class="profile-card mb-5">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        Registration Guidelines
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+
+                            Choose a unique username for each staff member.
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+
+                            Use a valid email address for password recovery.
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+
+                            Create a strong password with letters, numbers,
+                            and special characters.
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+
+                            Staff members can update their profile after
+                            signing in.
+
+                        </li>
+
+                        <li class="list-group-item">
+
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+
+                            Only salon administrators can register new staff
+                            accounts.
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+            <!-- ========================================= -->
+            <!-- ACTION BUTTONS -->
+            <!-- ========================================= -->
+
+            <div class="profile-card">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        Create Staff Account
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-lg-8">
+
+                            <h5>
+
+                                Ready to Register?
+
+                            </h5>
+
+                            <p class="text-muted mb-0">
+
+                                Please review all entered information before
+                                creating the staff account. Once registered,
+                                the staff member can log in and complete their
+                                professional profile.
+
+                            </p>
+
+                        </div>
+
+                        <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                            <button type="submit" class="btn btn-gold me-2">
+
+                                <i class="bi bi-person-plus-fill"></i>
+
+                                Register Staff
+
+                            </button>
+
+                            <button type="reset" class="btn btn-outline-secondary">
+
+                                <i class="bi bi-arrow-counterclockwise"></i>
+
+                                Reset
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- SECURITY NOTICE -->
+            <!-- ========================================= -->
+
+            <div class="alert alert-info mt-5">
+
+                <div class="d-flex align-items-start">
+
+                    <i class="bi bi-shield-lock-fill fs-3 me-3"></i>
+
+                    <div>
+
+                        <h5>
+
+                            Security Notice
+
+                        </h5>
+
+                        <p class="mb-0">
+
+                            Staff accounts should only be created by authorized
+                            salon administrators. Each staff member should use
+                            their own email address and keep their login
+                            credentials confidential.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- NEXT STEPS -->
+            <!-- ========================================= -->
+
+            <div class="profile-card mt-5">
+
+                <div class="card-header-custom">
+
+                    <h4>
+
+                        After Registration
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-4 text-center mb-4">
+
+                            <i class="bi bi-person-circle display-5 text-warning"></i>
+
+                            <h5 class="mt-3">
+
+                                Complete Profile
+
+                            </h5>
+
+                            <p>
+
+                                Ask the staff member to upload a profile picture,
+                                bio, specialization, and contact information.
+
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4 text-center mb-4">
+
+                            <i class="bi bi-scissors display-5 text-warning"></i>
+
+                            <h5 class="mt-3">
+
+                                Assign Services
+
+                            </h5>
+
+                            <p>
+
+                                Add the salon services the staff member is
+                                qualified to perform.
+
+                            </p>
+
+                        </div>
+
+                        <div class="col-md-4 text-center mb-4">
+
+                            <i class="bi bi-calendar-week display-5 text-warning"></i>
+
+                            <h5 class="mt-3">
+
+                                Set Working Hours
+
+                            </h5>
+
+                            <p>
+
+                                Configure weekly working hours so customers can
+                                book appointments accurately.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ========================================= -->
+            <!-- FOOTER ACTIONS -->
+            <!-- ========================================= -->
+
+            <div class="text-center mt-5">
+
+                <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-gold me-3">
+
+                    <i class="bi bi-speedometer2"></i>
+
+                    Dashboard
+
+                </a>
+
+                <a href="{% url 'owner_staff_list' %}" class="btn btn-outline-secondary me-3">
+
+                    <i class="bi bi-people-fill"></i>
+
+                    Staff List
+
+                </a>
+
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+
+                    <i class="bi bi-house-door-fill"></i>
+
+                    Home
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
 {% endblock %}

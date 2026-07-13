@@ -52,7 +52,7 @@ def u_login(request):
             login(request, user)
             return redirect("home")
         messages.error(request, "Invalid username or password")
-    return render(request, "signup.html")
+    return render(request, "login.html")
 
 
 def signin_view(request):
@@ -150,14 +150,14 @@ def create_appointment(request):
                 appointment.full_clean()
             except Exception:
                 form.add_error(None, "Double booking detected or invalid input.")
-                return render(request, "appointment_form.html", {"form": form})
+                return render(request, "appointment/appointment_form.html", {"form": form})
             appointment.save()
             messages.success(request, "Appointment booked successfully!")
             return redirect("appointment_list")
-        return render(request, "appointment_form.html", {"form": form})
+        return render(request, "appointment/appointment_form.html", {"form": form})
 
     form = AppointmentForm()
-    return render(request, "appointment_form.html", {"form": form})
+    return render(request, "appointment/appointment_form.html", {"form": form})
 
 
 @login_required
@@ -240,7 +240,7 @@ def appointment_detail(request, pk):
         pk=pk,
         customer=request.user.customer_profile,
     )
-    return render(request, "appointment_detail.html", {"appointment": appointment})
+    return render(request, "appointment/appointment_detail.html", {"appointment": appointment})
 
 
 @login_required

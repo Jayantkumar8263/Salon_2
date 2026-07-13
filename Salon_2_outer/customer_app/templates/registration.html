@@ -1,50 +1,146 @@
 {% extends "base/base.html" %}
 {% load static %}
+
+{% block title %}
+Registration | Salon
+{% endblock %}
+
 {% block base %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
 
-            <div class="card shadow p-4">
-                <h3 class="text-center mb-3">Create Account</h3>
+<section class="registration-section">
 
-                <form method="post">
-                    {% csrf_token %}
+    <div class="container">
 
-                    <!-- Username -->
-                    <div class="mb-3">
-                        <label for="id_username" class="form-label">Username</label>
-                        {{ form.username }}
-                        <div class="text-danger small">{{ form.username.errors }}</div>
+        <div class="row justify-content-center align-items-center min-vh-100">
+
+            <div class="col-xl-8 col-lg-9">
+
+                <div class="registration-card">
+
+                    <div class="text-center mb-5">
+
+                        <h1 class="brand-title">
+                            Salon
+                        </h1>
+
+                        <p class="brand-subtitle">
+                            Register your customer account
+                        </p>
+
                     </div>
 
-                    <!-- Email -->
-                    <div class="mb-3">
-                        <label for="id_email" class="form-label">Email</label>
-                        {{ form.email }}
-                        <div class="text-danger small">{{ form.email.errors }}</div>
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-{{ message.tags }}">
+
+                                {{ message }}
+
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                    <form method="POST" novalidate>
+
+                        {% csrf_token %}
+
+                        <div class="row">
+
+                            {% for field in form %}
+
+                                <div class="col-md-6 mb-4">
+
+                                    <label class="form-label">
+
+                                        {{ field.label }}
+
+                                    </label>
+
+                                    {{ field }}
+
+                                    {% if field.help_text %}
+
+                                        <small class="form-text text-muted">
+
+                                            {{ field.help_text }}
+
+                                        </small>
+
+                                    {% endif %}
+
+                                    {% for error in field.errors %}
+
+                                        <div class="text-danger mt-2">
+
+                                            {{ error }}
+
+                                        </div>
+
+                                    {% endfor %}
+
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="d-grid mt-4">
+
+                            <button
+                                type="submit"
+                                class="btn btn-gold">
+
+                                Register Account
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+
+                        <p>
+
+                            Already have an account?
+
+                        </p>
+
+                        <a
+                            href="{% url 'signin' %}"
+                            class="btn btn-outline-gold">
+
+                            Sign In
+
+                        </a>
+
                     </div>
 
-                    <!-- Password -->
-                    <div class="mb-3">
-                        <label for="id_password1" class="form-label">Password</label>
-                        {{ form.password1 }}
-                        <div class="text-danger small">{{ form.password1.errors }}</div>
+                    <div class="text-center mt-4">
+
+                        <a
+                            href="{% url 'home' %}"
+                            class="back-home">
+
+                            ← Back to Home
+
+                        </a>
+
                     </div>
 
-                    <!-- Confirm Password -->
-                    <div class="mb-3">
-                        <label for="id_password2" class="form-label">Confirm Password</label>
-                        {{ form.password2 }}
-                        <div class="text-danger small">{{ form.password2.errors }}</div>
-                    </div>
-
-                    <button class="btn btn-dark w-100 mt-2">Register</button>
-                </form>
+                </div>
 
             </div>
 
         </div>
+
     </div>
-</div>
-{% endblock base %}
+
+</section>
+
+{% endblock %}

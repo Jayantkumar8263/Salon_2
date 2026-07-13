@@ -13,5 +13,6 @@ class CustomerProfile(models.Model):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     banner = models.ImageField(upload_to='banners/', blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    notes = models.TextField(blank=True, null=True)
     def __str__(self):
         return self.user.get_full_name()

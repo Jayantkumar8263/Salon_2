@@ -1,72 +1,632 @@
-{% extends 'base/base.html' %}
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+Book Appointment | Lumière Salon
+{% endblock %}
 
 {% block base %}
-<div class="container mt-4">
-  <h2>{{ page_title|default:"Book Appointment" }}</h2>
 
-  <form method="post" class="mt-4">
-    {% csrf_token %}
+<section class="appointment-form-section py-5">
 
-    {% if form.non_field_errors %}
-      <div class="alert alert-danger">
-        {{ form.non_field_errors }}
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-xl-10">
+
+        <!-- ======================================= -->
+        <!-- PAGE HEADER -->
+        <!-- ======================================= -->
+
+        <div class="page-header mb-5">
+
+          <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+              <h2 class="page-title">
+
+                Book Appointment
+
+              </h2>
+
+              <p class="page-subtitle">
+
+                Choose your preferred service, staff member and appointment time.
+
+              </p>
+
+            </div>
+
+            <div class="col-lg-4 text-lg-end">
+
+              <a href="{% url 'appointment_list' %}" class="btn btn-outline-gold">
+
+                <i class="bi bi-arrow-left"></i>
+
+                My Appointments
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- SERVICE SUMMARY -->
+        <!-- ======================================= -->
+
+        {% if service %}
+
+        <div class="selected-service-card mb-5">
+
+          <div class="row align-items-center">
+
+            <div class="col-lg-8">
+
+              <h3>
+
+                {{ service.service_name }}
+
+              </h3>
+
+              <p>
+
+                {{ service.description }}
+
+              </p>
+
+            </div>
+
+            <div class="col-lg-2 text-center">
+
+              <h5>
+
+                ₹{{ service.price }}
+
+              </h5>
+
+            </div>
+
+            <div class="col-lg-2 text-center">
+
+              <h5>
+
+                {{ service.duration }}
+
+                min
+
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {% endif %}
+
+        <!-- ======================================= -->
+        <!-- APPOINTMENT FORM -->
+        <!-- ======================================= -->
+
+        <div class="profile-card">
+
+          <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="row">
+
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+
+                  Service
+
+                </label>
+
+                {{ form.service }}
+
+                {% for error in form.service.errors %}
+
+                <div class="text-danger mt-2">
+
+                  {{ error }}
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+
+                  Staff Member
+
+                </label>
+
+                {{ form.staff }}
+
+                {% for error in form.staff.errors %}
+
+                <div class="text-danger mt-2">
+
+                  {{ error }}
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+              <!-- ======================================= -->
+              <!-- APPOINTMENT DATE -->
+              <!-- ======================================= -->
+
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+
+                  Appointment Date
+
+                </label>
+
+                {{ form.appointment_date }}
+
+                {% for error in form.appointment_date.errors %}
+
+                <div class="text-danger mt-2">
+
+                  {{ error }}
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+
+              <!-- ======================================= -->
+              <!-- START TIME -->
+              <!-- ======================================= -->
+
+              <div class="col-md-6 mb-4">
+
+                <label class="form-label">
+
+                  Appointment Time
+
+                </label>
+
+                {{ form.start_time }}
+
+                {% for error in form.start_time.errors %}
+
+                <div class="text-danger mt-2">
+
+                  {{ error }}
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+
+              <!-- ======================================= -->
+              <!-- NOTES -->
+              <!-- ======================================= -->
+
+              {% if form.notes %}
+
+              <div class="col-12 mb-4">
+
+                <label class="form-label">
+
+                  Additional Notes
+
+                </label>
+
+                {{ form.notes }}
+
+                {% for error in form.notes.errors %}
+
+                <div class="text-danger mt-2">
+
+                  {{ error }}
+
+                </div>
+
+                {% endfor %}
+
+              </div>
+
+              {% endif %}
+
+              <!-- ======================================= -->
+              <!-- NON FIELD ERRORS -->
+              <!-- ======================================= -->
+
+              {% if form.non_field_errors %}
+
+              <div class="col-12">
+
+                <div class="alert alert-danger">
+
+                  {% for error in form.non_field_errors %}
+
+                  <p class="mb-1">
+
+                    {{ error }}
+
+                  </p>
+
+                  {% endfor %}
+
+                </div>
+
+              </div>
+
+              {% endif %}
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- BOOKING SUMMARY -->
+            <!-- ======================================= -->
+
+            <div class="booking-summary mt-5">
+
+              <h4 class="mb-4">
+
+                Booking Summary
+
+              </h4>
+
+              <div class="row gy-3">
+
+                {% if service %}
+
+                <div class="col-lg-6">
+
+                  <div class="summary-item">
+
+                    <span>
+
+                      Selected Service
+
+                    </span>
+
+                    <strong>
+
+                      {{ service.service_name }}
+
+                    </strong>
+
+                  </div>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                  <div class="summary-item">
+
+                    <span>
+
+                      Duration
+
+                    </span>
+
+                    <strong>
+
+                      {{ service.duration }} Minutes
+
+                    </strong>
+
+                  </div>
+
+                </div>
+
+                <div class="col-lg-6">
+
+                  <div class="summary-item">
+
+                    <span>
+
+                      Price
+
+                    </span>
+
+                    <strong class="text-success">
+
+                      ₹{{ service.price }}
+
+                    </strong>
+
+                  </div>
+
+                </div>
+
+                {% endif %}
+
+                <div class="col-lg-6">
+
+                  <div class="summary-item">
+
+                    <span>
+
+                      Booking Status
+
+                    </span>
+
+                    <strong class="text-warning">
+
+                      Pending Confirmation
+
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- ACTION BUTTONS -->
+            <!-- ======================================= -->
+
+            <div class="d-flex justify-content-end gap-3 mt-5">
+
+              <a href="{% url 'appointment_list' %}" class="btn btn-outline-secondary">
+
+                Cancel
+
+              </a>
+
+              <button type="submit" class="btn btn-gold">
+
+                <i class="bi bi-calendar-check"></i>
+
+                Confirm Appointment
+
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+        <!-- ======================================= -->
+        <!-- BOOKING INFORMATION -->
+        <!-- ======================================= -->
+
+        <div class="row mt-5">
+
+          <!-- Booking Success / Information -->
+
+          <div class="col-lg-6 mb-4">
+
+            <div class="info-card">
+
+              <div class="info-card-header">
+
+                <i class="bi bi-info-circle-fill"></i>
+
+                <h4>
+
+                  Before You Book
+
+                </h4>
+
+              </div>
+
+              <ul class="booking-list">
+
+                <li>
+
+                  Your appointment will initially remain
+                  <strong>Pending</strong>.
+
+                </li>
+
+                <li>
+
+                  The salon will confirm your booking after
+                  checking staff availability.
+
+                </li>
+
+                <li>
+
+                  You will be able to edit or cancel the
+                  appointment before it is confirmed.
+
+                </li>
+
+                <li>
+
+                  A confirmation message will be shown in your
+                  appointment dashboard.
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+          <!-- Booking Policies -->
+
+          <div class="col-lg-6 mb-4">
+
+            <div class="info-card">
+
+              <div class="info-card-header">
+
+                <i class="bi bi-shield-check"></i>
+
+                <h4>
+
+                  Booking Policies
+
+                </h4>
+
+              </div>
+
+              <ul class="booking-list">
+
+                <li>
+
+                  Please arrive at least
+                  <strong>10 minutes early.</strong>
+
+                </li>
+
+                <li>
+
+                  Late arrivals may require rescheduling.
+
+                </li>
+
+                <li>
+
+                  Appointment cancellation should be done
+                  at least
+                  <strong>24 hours</strong>
+                  before the scheduled time.
+
+                </li>
+
+                <li>
+
+                  Salon reserves the right to cancel
+                  appointments in unavoidable situations.
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- HELPFUL TIPS -->
+        <!-- ======================================= -->
+
+        <div class="profile-card mt-4">
+
+          <div class="card-header-custom">
+
+            <h4>
+
+              Helpful Tips
+
+            </h4>
+
+          </div>
+
+          <div class="row mt-3">
+
+            <div class="col-md-4">
+
+              <div class="tip-box">
+
+                <i class="bi bi-clock-history"></i>
+
+                <h6>
+
+                  Choose Off-Peak Hours
+
+                </h6>
+
+                <p>
+
+                  Morning appointments usually have shorter
+                  waiting times.
+
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="tip-box">
+
+                <i class="bi bi-person-check-fill"></i>
+
+                <h6>
+
+                  Select Your Stylist
+
+                </h6>
+
+                <p>
+
+                  Book your preferred staff member for a
+                  personalized experience.
+
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="col-md-4">
+
+              <div class="tip-box">
+
+                <i class="bi bi-stars"></i>
+
+                <h6>
+
+                  Premium Experience
+
+                </h6>
+
+                <p>
+
+                  Explore premium services for the best salon
+                  experience.
+
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ======================================= -->
+        <!-- FOOT NOTE -->
+        <!-- ======================================= -->
+
+        <div class="text-center mt-5">
+
+          <small class="text-muted">
+
+            Need help with your booking?
+
+            Contact our salon support or visit the reception desk.
+
+          </small>
+
+        </div>
+
       </div>
-    {% endif %}
 
-    <div class="mb-3">
-      <label class="form-label fw-bold text-dark">Username</label>
-      <input type="text" class="form-control" value="{{ request.user.username }}" readonly>
-    </div>
+</section>
 
-    <div class="mb-3">
-      <label class="form-label fw-bold text-dark">Staff</label>
-      {{ form.staff }}
-      {% if form.staff.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.staff.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label fw-bold text-dark">Services</label>
-      {{ form.service }}
-      {% if form.service.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.service.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label fw-bold text-dark">
-        Date and Time <span class="text-danger">*</span>
-      </label>
-      {{ form.start_time }} 
-      {% if form.start_time.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.start_time.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label fw-bold text-dark">Notes (Optional)</label>
-      <input type="text" class="form-control" placeholder="Any specific requests?">
-      {{ form.notes }}
-      {% if form.notes.errors %}
-        <div class="invalid-feedback d-block">
-          {{ form.notes.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <button type="submit" class="btn btn-warning btn-lg w-100 fw-bold">
-      Confirm Booking
-    </button>
-    <a href="javascript:history.back()" class="btn btn-dark btn-lg w-100 mt-2">
-      Cancel
-    </a>
-  </form>
-</div>
-{% endblock base %}
+{% endblock %}

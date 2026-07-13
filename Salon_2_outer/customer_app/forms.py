@@ -12,7 +12,33 @@ class CustomerSign_upForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+        widgets = {
 
+            "first_name": forms.TextInput(attrs={
+
+                "class":"form-control custom-input"
+
+            }),
+
+            "last_name": forms.TextInput(attrs={
+
+                "class":"form-control custom-input"
+
+            }),
+
+            "username": forms.TextInput(attrs={
+
+                "class":"form-control custom-input"
+
+            }),
+
+            "email": forms.EmailInput(attrs={
+
+                "class":"form-control custom-input"
+
+            }),
+
+        }
         def save(self, commit = True):
             user = super().save(commit = False)
             user.first_name = self.cleaned['first_name']

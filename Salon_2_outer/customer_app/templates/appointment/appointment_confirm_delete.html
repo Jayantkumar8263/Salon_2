@@ -1,15 +1,216 @@
 {% extends "base/base.html" %}
-{% block base %}
-<div class="container mt-4">
-    <h2>Confirm Appointment Cancellation</h2>
-    <div class="alert alert-warning" role="alert">
-        Are you sure you want to cancel your appointment with {{ appointment.staff.name }} for {{ appointment.service.name }} on {{ appointment.appointment_date }}?
-    </div>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger fw-bold ">Yes, Cancel Appointment</button>
-        <a href="{% url 'appointment_list' %}" class="btn btn-secondary">No, Go Back</a>
-    </form>
-</div>
-{% endblock base %}
+{% load static %}
 
+{% block title %}
+Cancel Appointment
+{% endblock %}
+
+{% block base %}
+
+<section class="cancel-appointment-section py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-7">
+
+                <div class="profile-card">
+
+                    <!-- ===================================== -->
+                    <!-- HEADER -->
+                    <!-- ===================================== -->
+
+                    <div class="text-center mb-5">
+
+                        <div class="cancel-icon">
+
+                            <i class="bi bi-exclamation-triangle-fill text-danger display-2"></i>
+
+                        </div>
+
+                        <h2 class="mt-4">
+
+                            Cancel Appointment
+
+                        </h2>
+
+                        <p class="text-muted">
+
+                            Are you sure you want to cancel this appointment?
+
+                        </p>
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- APPOINTMENT SUMMARY -->
+                    <!-- ===================================== -->
+
+                    <div class="appointment-summary">
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Service
+
+                            </span>
+
+                            <strong>
+
+                                {{ appointment.service.service_name }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Staff
+
+                            </span>
+
+                            <strong>
+
+                                {% if appointment.staff %}
+
+                                {{ appointment.staff.user.get_full_name }}
+
+                                {% else %}
+
+                                Not Assigned
+
+                                {% endif %}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Appointment Date
+
+                            </span>
+
+                            <strong>
+
+                                {{ appointment.start_time|date:"d M Y" }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Time
+
+                            </span>
+
+                            <strong>
+
+                                {{ appointment.start_time|time:"h:i A" }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Status
+
+                            </span>
+
+                            <strong>
+
+                                {{ appointment.status }}
+
+                            </strong>
+
+                        </div>
+
+                        <div class="summary-row">
+
+                            <span>
+
+                                Price
+
+                            </span>
+
+                            <strong>
+
+                                ₹{{ appointment.service.price }}
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- ===================================== -->
+                    <!-- WARNING -->
+                    <!-- ===================================== -->
+
+                    <div class="alert alert-warning">
+
+                        <i class="bi bi-info-circle-fill me-2"></i>
+
+                        Cancelling this appointment cannot be undone.
+
+                        If you still want this service later,
+
+                        you'll need to book a new appointment.
+
+                    </div>
+
+                    <!-- ===================================== -->
+                    <!-- FORM -->
+                    <!-- ===================================== -->
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+                            <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-outline-gold">
+
+                                <i class="bi bi-arrow-left"></i>
+
+                                Go Back
+
+                            </a>
+
+                            <button type="submit" class="btn btn-danger">
+
+                                <i class="bi bi-trash"></i>
+
+                                Yes, Cancel Appointment
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

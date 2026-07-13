@@ -1,44 +1,682 @@
 {% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}
+My Appointments
+{% endblock %}
+
 {% block base %}
-<div class="container mt-4">
-    <h2>Your Appointments</h2>
 
-    {% for appointment in appointments %}
-    <div class="card mt-3">
-        <div class="card-body">
+<section class="appointment-page py-5">
 
-            <h5 class="card-title">
-                Appointment with {{ appointment.staff.name }}
-            </h5>
+    <div class="container">
 
-            <h6 class="card-subtitle mb-2 text-muted">
-                Service: {{ appointment.service.service_name }}
-            </h6>
+        <!-- ======================================== -->
+        <!-- PAGE HEADER -->
+        <!-- ======================================== -->
 
-            <p class="card-text">
-                Date and Time: {{ appointment.start_time }}
-            </p>
+        <div class="page-header mb-5">
 
-            {% if appointment.notes %}
-            <p class="card-text"><small>Notes: {{ appointment.notes }}</small></p>
-            {% endif %}
+            <div class="row align-items-center">
 
-            <a href="{% url 'appointment_edit' appointment.id %}" class="btn btn-warning btn-sm">
-                Edit
-            </a>
+                <div class="col-lg-8">
 
-            {% if appointment.id %}
-            <a href="{% url 'appointment_cancel' appointment.id %}" class="btn btn-danger btn-sm">
-                Cancel
-            </a>
-            {% endif %}
+                    <h2 class="page-title">
+
+                        My Appointments
+
+                    </h2>
+
+                    <p class="page-subtitle">
+
+                        View, manage and track all your salon appointments.
+
+                    </p>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end">
+
+                    <a href="{% url 'create_appointment' %}" class="btn btn-gold">
+
+                        <i class="bi bi-calendar-plus"></i>
+
+                        Book Appointment
+
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
+
+        <!-- ======================================== -->
+        <!-- DASHBOARD CARDS -->
+        <!-- ======================================== -->
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-calendar-check"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ appointments.count }}
+
+                    </h3>
+
+                    <p>
+
+                        Total Appointments
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ pending_count }}
+
+                    </h3>
+
+                    <p>
+
+                        Pending
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-check-circle"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ confirmed_count }}
+
+                    </h3>
+
+                    <p>
+
+                        Confirmed
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+
+                <div class="dashboard-card">
+
+                    <div class="dashboard-icon">
+
+                        <i class="bi bi-x-circle"></i>
+
+                    </div>
+
+                    <h3>
+
+                        {{ cancelled_count }}
+
+                    </h3>
+
+                    <p>
+
+                        Cancelled
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ======================================== -->
+        <!-- SEARCH & FILTER -->
+        <!-- ======================================== -->
+
+        <div class="profile-card mb-5">
+
+            <form method="GET">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-lg-5">
+
+                        <label class="form-label">
+
+                            Search Service
+
+                        </label>
+
+                        <input type="text" name="search" class="form-control custom-input"
+                            placeholder="Hair Cut, Spa..." value="{{ request.GET.search }}">
+
+                    </div>
+
+                    <div class="col-lg-3">
+
+                        <label class="form-label">
+
+                            Status
+
+                        </label>
+
+                        <select name="status" class="form-select custom-input">
+
+                            <option value="">
+
+                                All
+
+                            </option>
+
+                            <option value="Pending">
+
+                                Pending
+
+                            </option>
+
+                            <option value="Confirmed">
+
+                                Confirmed
+
+                            </option>
+
+                            <option value="Completed">
+
+                                Completed
+
+                            </option>
+
+                            <option value="Cancelled">
+
+                                Cancelled
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <button class="btn btn-outline-gold w-100">
+
+                            Filter
+
+                        </button>
+
+                    </div>
+
+                    <div class="col-lg-2">
+
+                        <a href="{% url 'appointment_list' %}" class="btn btn-secondary w-100">
+
+                            Reset
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- ======================================== -->
+        <!-- APPOINTMENTS -->
+        <!-- ======================================== -->
+
+        <div class="row g-4">
+
+            {% if appointments %}
+
+            {% for appointment in appointments %}
+
+            <div class="col-lg-6">
+
+                <div class="appointment-card">
+
+                    <div class="appointment-header">
+
+                        <div>
+
+                            <h4>
+
+                                {{ appointment.service.service_name }}
+
+                            </h4>
+
+                            <p>
+
+                                Booked on
+
+                                {{ appointment.booked_at|date:"d M Y" }}
+
+                            </p>
+
+                        </div>
+                        <div class="text-end">
+
+                            {% if appointment.status == "Pending" %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                Pending
+
+                            </span>
+
+                            {% elif appointment.status == "Confirmed" %}
+
+                            <span class="badge bg-success">
+
+                                Confirmed
+
+                            </span>
+
+                            {% elif appointment.status == "Completed" %}
+
+                            <span class="badge bg-primary">
+
+                                Completed
+
+                            </span>
+
+                            {% elif appointment.status == "Cancelled" %}
+
+                            <span class="badge bg-danger">
+
+                                Cancelled
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-secondary">
+
+                                {{ appointment.status }}
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="appointment-body">
+
+                        <div class="row gy-3">
+
+                            <div class="col-md-6">
+
+                                <div class="appointment-info">
+
+                                    <i class="bi bi-person-badge"></i>
+
+                                    <div>
+
+                                        <small class="text-muted d-block">
+
+                                            Staff Member
+
+                                        </small>
+
+                                        <strong>
+
+                                            {{ appointment.staff.user.get_full_name }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="appointment-info">
+
+                                    <i class="bi bi-calendar-event"></i>
+
+                                    <div>
+
+                                        <small class="text-muted d-block">
+
+                                            Appointment Date
+
+                                        </small>
+
+                                        <strong>
+
+                                            {{ appointment.start_time|date:"d M Y" }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="appointment-info">
+
+                                    <i class="bi bi-clock"></i>
+
+                                    <div>
+
+                                        <small class="text-muted d-block">
+
+                                            Time
+
+                                        </small>
+
+                                        <strong>
+
+                                            {{ appointment.start_time|time:"h:i A" }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <div class="appointment-info">
+
+                                    <i class="bi bi-cash-stack"></i>
+
+                                    <div>
+
+                                        <small class="text-muted d-block">
+
+                                            Price
+
+                                        </small>
+
+                                        <strong>
+
+                                            ₹{{ appointment.service.price }}
+
+                                        </strong>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+
+                                <div class="appointment-info">
+
+                                    <i class="bi bi-scissors"></i>
+
+                                    <div>
+
+                                        <small class="text-muted d-block">
+
+                                            Service Description
+
+                                        </small>
+
+                                        <span>
+
+                                            {{ appointment.service.description }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="appointment-footer">
+
+                        <div class="d-flex flex-wrap gap-2 justify-content-end">
+
+                            <a href="{% url 'appointment_detail' appointment.pk %}" class="btn btn-outline-gold">
+
+                                <i class="bi bi-eye"></i>
+
+                                View
+
+                            </a>
+
+                            {% if appointment.status != "Cancelled" and appointment.status != "Completed" %}
+
+                            <a href="{% url 'appointment_edit' appointment.pk %}" class="btn btn-outline-primary">
+
+                                <i class="bi bi-pencil-square"></i>
+
+                                Edit
+
+                            </a>
+
+                            <a href="{% url 'appointment_cancel' appointment.pk %}" class="btn btn-outline-danger">
+
+                                <i class="bi bi-x-circle"></i>
+
+                                Cancel
+
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+            {% else %}
+
+<div class="col-12">
+
+    <div class="empty-state text-center">
+
+        <div class="empty-icon mb-4">
+
+            <i class="bi bi-calendar-x"></i>
+
+        </div>
+
+        <h3>
+
+            No Appointments Found
+
+        </h3>
+
+        <p class="text-muted mb-4">
+
+            You haven't booked any appointments yet.
+            Browse our salon services and schedule your first appointment.
+
+        </p>
+
+        <a
+            href="{% url 'service_list' %}"
+            class="btn btn-gold">
+
+            <i class="bi bi-scissors"></i>
+
+            Browse Services
+
+        </a>
+
     </div>
-    {% empty %}
-    <p>You have no appointments yet.</p>
-    <strong>Date & Time:</strong> {{ appointment.start_time }}
-    <strong>Status:</strong> {{ appointment.status }}
-    {% endfor %}
+
 </div>
+
+{% endif %}
+
+</div>
+
+<!-- ======================================== -->
+<!-- PAGINATION -->
+<!-- ======================================== -->
+
+{% if appointments.has_other_pages %}
+
+<div class="row mt-5">
+
+    <div class="col-12">
+
+        <nav aria-label="Appointments Pagination">
+
+            <ul class="pagination justify-content-center">
+
+                {% if appointments.has_previous %}
+
+                <li class="page-item">
+
+                    <a
+                        class="page-link"
+                        href="?page={{ appointments.previous_page_number }}">
+
+                        Previous
+
+                    </a>
+
+                </li>
+
+                {% else %}
+
+                <li class="page-item disabled">
+
+                    <span class="page-link">
+
+                        Previous
+
+                    </span>
+
+                </li>
+
+                {% endif %}
+
+                {% for page in appointments.paginator.page_range %}
+
+                    {% if appointments.number == page %}
+
+                    <li class="page-item active">
+
+                        <span class="page-link">
+
+                            {{ page }}
+
+                        </span>
+
+                    </li>
+
+                    {% else %}
+
+                    <li class="page-item">
+
+                        <a
+                            class="page-link"
+                            href="?page={{ page }}">
+
+                            {{ page }}
+
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                {% if appointments.has_next %}
+
+                <li class="page-item">
+
+                    <a
+                        class="page-link"
+                        href="?page={{ appointments.next_page_number }}">
+
+                        Next
+
+                    </a>
+
+                </li>
+
+                {% else %}
+
+                <li class="page-item disabled">
+
+                    <span class="page-link">
+
+                        Next
+
+                    </span>
+
+                </li>
+
+                {% endif %}
+
+            </ul>
+
+        </nav>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</section>
+
 {% endblock %}
