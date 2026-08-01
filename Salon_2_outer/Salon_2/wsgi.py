@@ -6,6 +6,7 @@ It exposes the WSGI callable as a module-level variable named ``application``.
 For more information on this file, see
 https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 """
+# wsgi is used for deploying the Django application to a web server. It serves as the entry point for WSGI-compatible web servers to serve your project, so it is a bridge between the web server and your Django application. It allows the web server to communicate with your Django application and handle incoming requests.
 
 import os
 

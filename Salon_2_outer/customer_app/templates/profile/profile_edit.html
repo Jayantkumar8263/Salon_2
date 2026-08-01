@@ -25,9 +25,9 @@ Edit Profile | Salon
 
                     <div class="col-lg-2 text-center">
 
-                        {% if profile_form.instance.profile_picture %}
+                        {% if user_form.instance.profile_picture %}
 
-                        <img src="{{ profile_form.instance.profile_picture.url }}" class="profile-avatar" alt="Profile">
+                        <img src="{{ user_form.instance.profile_picture.url }}" class="profile-avatar" alt="Profile">
 
                         {% else %}
 

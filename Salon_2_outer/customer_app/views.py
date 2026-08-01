@@ -8,7 +8,7 @@ from django.utils import timezone
 from salon_app.models import Appointment, Service
 from salon_app.forms import AppointmentForm
 from .models import CustomerProfile
-from .forms import CustomRegistrationForm, ProfileUpdateForm, CustomerProfileUpdateForm, CustomerSign_upForm
+from .forms import CustomRegistrationForm, ProfileUpdateForm, CustomerSign_upForm
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -110,19 +110,19 @@ def profile_edit(request):
 
     if request.method == "POST":
         user_form = ProfileUpdateForm(request.POST, instance=user)
-        profile_form = CustomerProfileUpdateForm(
+        profile_form = ProfileUpdateForm(
             request.POST,
             request.FILES,         
             instance=customer_profile,
         )
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
-            profile_form.save()    # porfille banner and the edits are going to be saved here 
+#            profile_form.save()    # porfille banner and the edits are going to be saved here 
             messages.success(request, "Profile updated successfully.")
             return redirect("profile")
     else:
         user_form = ProfileUpdateForm(instance=user) 
-        profile_form = CustomerProfileUpdateForm(instance=customer_profile)
+        profile_form = ProfileUpdateForm(instance=customer_profile)
 
     context = {
         "user_form": user_form,
