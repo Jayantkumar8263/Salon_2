@@ -8,7 +8,7 @@ from django.utils import timezone
 from salon_app.models import Appointment, Service
 from salon_app.forms import AppointmentForm
 from .models import CustomerProfile
-from .forms import CustomRegistrationForm, ProfileUpdateForm, CustomerSign_upForm
+from .forms import CustomRegistrationForm, ProfileUpdateForm, CustomerSign_upForm, UserUpdateForm
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -103,33 +103,86 @@ def u_profile(request):
 
 
 
+# @login_required
+# def profile_edit(request):
+#     user = request.user
+#     customer_profile, created = CustomerProfile.objects.get_or_create(user=user)
+
+#     if request.method == "POST":
+#         user_form = ProfileUpdateForm(request.POST, instance=user)
+#         # profile_form = ProfileUpdateForm(
+#         #     request.POST,
+#         #     request.FILES,         
+#         #     instance=customer_profile,
+#         # )
+#         if user_form.is_valid():
+#             user_form.save()
+#             # profile_form.save()    # porfille banner and the edits are going to be saved here 
+#             messages.success(request, "Profile updated successfully.")
+#             return redirect("profile")
+#     else:
+#         user_form = ProfileUpdateForm(instance=user) 
+#         # profile_form = ProfileUpdateForm(instance=customer_profile)
+
+#     context = {
+#         "user_form": user_form,
+#         # "profile_form": profile_form,
+#     }
+#     return render(request, "profile/profile_edit.html", context)
+
+from .forms import UserUpdateForm, ProfileUpdateForm
 @login_required
 def profile_edit(request):
     user = request.user
-    customer_profile, created = CustomerProfile.objects.get_or_create(user=user)
+
+    customer_profile, created = CustomerProfile.objects.get_or_create(
+        user=user
+    )
 
     if request.method == "POST":
-        user_form = ProfileUpdateForm(request.POST, instance=user)
+
+        user_form = UserUpdateForm(
+            request.POST,
+            instance=user
+        )
+
         profile_form = ProfileUpdateForm(
             request.POST,
-            request.FILES,         
-            instance=customer_profile,
+            request.FILES,
+            instance=customer_profile
         )
+
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
-#            profile_form.save()    # porfille banner and the edits are going to be saved here 
-            messages.success(request, "Profile updated successfully.")
+            profile_form.save()
+
+            messages.success(
+                request,
+                "Profile updated successfully."
+            )
+
             return redirect("profile")
+
     else:
-        user_form = ProfileUpdateForm(instance=user) 
-        profile_form = ProfileUpdateForm(instance=customer_profile)
+
+        user_form = UserUpdateForm(
+            instance=user
+        )
+
+        profile_form = ProfileUpdateForm(
+            instance=customer_profile
+        )
 
     context = {
         "user_form": user_form,
         "profile_form": profile_form,
     }
-    return render(request, "profile/profile_edit.html", context)
 
+    return render(
+        request,
+        "profile/profile_edit.html",
+        context,
+    )
 
 # ---------- APPOINTMENTS ----------
 

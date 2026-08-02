@@ -86,22 +86,22 @@ class CustomRegistrationForm(UserCreationForm):
         })
 
 #___Profile Update Form____
-class ProfileUpdateForm(forms.ModelForm):
-    email = forms.EmailField(required=True)
+# class ProfileUpdateForm(forms.ModelForm):
+#     email = forms.EmailField(required=True)
 
-    class Meta:
-        model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
-        model = CustomerProfile # Connecting form to the CustomerProfile model, this model has fields like phone number, banner, avatar etc.
-        fields = ['phone_number', 'banner', 'avatar']
+#     class Meta:
+#         model = User
+#         fields = ['username', 'email', 'first_name', 'last_name']
+#         model = CustomerProfile # Connecting form to the CustomerProfile model, this model has fields like phone number, banner, avatar etc.
+#         fields = ['phone_number', 'banner', 'avatar']
 
-    def __init__(self, *args, **kwargs):# we use def __init__(self, *args, **kwargs): to customize the initialization of the form and add Bootstrap classes to the form fields for better styling, here self is for the instance of the form, *args and **kwargs are used to pass variable number of arguments to the method.
-        self.user = kwargs.get('instance')# this line retrieves the user details passed to the form during initialization and assigns/stores it to self.user for later use,
-        # we are using instance for updating the user details.
-        super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):# we use def __init__(self, *args, **kwargs): to customize the initialization of the form and add Bootstrap classes to the form fields for better styling, here self is for the instance of the form, *args and **kwargs are used to pass variable number of arguments to the method.
+#         self.user = kwargs.get('instance')# this line retrieves the user details passed to the form during initialization and assigns/stores it to self.user for later use,
+#         # we are using instance for updating the user details.
+#         super().__init__(*args, **kwargs)
 
-        for field in self.fields.values():
-            field.widget.attrs.update({'class': 'form-control'})
+#         for field in self.fields.values():
+#             field.widget.attrs.update({'class': 'form-control'})
 
 
 """# ___ Customer Profile Update Form____
@@ -115,3 +115,43 @@ class CustomerProfileUpdateForm(forms.ModelForm):# this form is for updating the
         for field in self.fields.values(): # i am using this loop to add bootstrap class to all the fields in the form, values() is for getting the field objects like CharField, ImageField etc.
             field.widget.attrs.update({'class': 'form-control'}) # adding bootstrap class to all the fields in the form, 'form-control' is a bootstrap class for styling the form fields, update() method is used to add the class to the existing classes of the field, ye update karta hai existing classes ko.
 """
+
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
+
+
+class ProfileUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = CustomerProfile
+        fields = [
+            'phone_number',
+            'banner',
+            'avatar',
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'form-control'
+            })
